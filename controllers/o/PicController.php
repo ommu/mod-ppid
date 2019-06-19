@@ -59,6 +59,23 @@ class PicController extends Controller
 	/**
 	 * {@inheritdoc}
 	 */
+	public function allowAction(): array {
+		return ['suggest'];
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function actions()
+	{
+		return [
+			'suggest' => 'ommu\ppid\actions\PicSuggestAction',
+		];
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function actionIndex()
 	{
 		return $this->redirect(['manage']);

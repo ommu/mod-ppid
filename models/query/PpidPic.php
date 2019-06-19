@@ -50,6 +50,15 @@ class PpidPic extends \yii\db\ActiveQuery
 
 	/**
 	 * {@inheritdoc}
+	 */
+	public function suggest() 
+	{
+		return $this->select(['id', 'pic_name'])
+			->published();
+	}
+
+	/**
+	 * {@inheritdoc}
 	 * @return \ommu\ppid\models\PpidPic[]|array
 	 */
 	public function all($db = null)
