@@ -1,0 +1,9 @@
+{
+	"id": "ppid",
+	"name": "PPID",
+	"description": "Pejabat Pengelola Informasi dan Dokumentasi (PPID) Module from Ommu Platform",
+	"keywords": [
+		"ppid, article, document"
+	],
+	"version": "1.0"
+}
