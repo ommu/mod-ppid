@@ -22,6 +22,7 @@ use ommu\ppid\models\PpidFormat;
 use ommu\selectize\Selectize;
 use yii\helpers\ArrayHelper;
 use ommu\article\models\ArticleCategory;
+use ommu\ppid\models\Ppid;
 use ommu\ppid\models\Articles;
 ?>
 
@@ -61,11 +62,31 @@ echo $form->field($article, 'cat_id')
 	->label($model->getAttributeLabel('pic_id')); ?>
 
 <?php echo $form->field($model, 'release_year')
-	->textInput(['maxlength'=>true])
+	->widget(Selectize::className(), [
+		'options' => [
+			'placeholder' => Yii::t('app', 'Select a release year..'),
+		],
+		'items' => ArrayHelper::merge([''=>Yii::t('app', 'Select a release year..')], Ppid::getFilter('release')),
+		'pluginOptions' => [
+			'persist' => false,
+			'createOnBlur' => false,
+			'create' => true,
+		],
+	])
 	->label($model->getAttributeLabel('release_year')); ?>
 
 <?php echo $form->field($model, 'retention')
-	->textInput(['maxlength'=>true])
+	->widget(Selectize::className(), [
+		'options' => [
+			'placeholder' => Yii::t('app', 'Select a retention..'),
+		],
+		'items' => ArrayHelper::merge([''=>Yii::t('app', 'Select a retention..')], Ppid::getFilter('retention')),
+		'pluginOptions' => [
+			'persist' => false,
+			'createOnBlur' => false,
+			'create' => true,
+		],
+	])
 	->label($model->getAttributeLabel('retention')); ?>
 
 <?php $uploadPath = join('/', [Articles::getUploadPath(false), $article->id]);

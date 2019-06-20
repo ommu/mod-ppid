@@ -26,6 +26,26 @@ class Ppid extends \yii\db\ActiveQuery
 
 	/**
 	 * {@inheritdoc}
+	 */
+	public function filterRelease()
+	{
+		return $this->select(['ppid_id', 'release_year as filter'])
+			->andWhere(['<>', 'release_year', ''])
+			->groupBy(['release_year']);
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function filterRetention()
+	{
+		return $this->select(['ppid_id', 'retention as filter'])
+			->andWhere(['<>', 'retention', ''])
+			->groupBy(['retention']);
+	}
+
+	/**
+	 * {@inheritdoc}
 	 * @return \ommu\ppid\models\Ppid[]|array
 	 */
 	public function all($db = null)

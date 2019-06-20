@@ -48,6 +48,7 @@ class Ppid extends \app\components\ActiveRecord
 	public $creationDisplayname;
 	public $modifiedDisplayname;
 	public $format;
+	public $filter;
 
 	const EVENT_BEFORE_SAVE_PPIDS = 'BeforeSavePpids';
 
@@ -198,12 +199,14 @@ class Ppid extends \app\components\ActiveRecord
 			'value' => function($model, $key, $index, $column) {
 				return $model->release_year;
 			},
+			// 'filter' => Ppid::getFilter('release'),
 		];
 		$this->templateColumns['retention'] = [
 			'attribute' => 'retention',
 			'value' => function($model, $key, $index, $column) {
 				return $model->retention;
 			},
+			// 'filter' => Ppid::getFilter('retention'),
 		];
 		$this->templateColumns['format'] = [
 			'attribute' => 'format',
@@ -262,6 +265,22 @@ class Ppid extends \app\components\ActiveRecord
 			$model = self::findOne($id);
 			return $model;
 		}
+	}
+
+	/**
+	 * User get information
+	 */
+	public static function getFilter($filter='release')
+	{
+		$model = self::find();
+		if($filter == 'release')
+			$model->filterRelease();
+		else if($filter == 'retention')
+			$model->filterRetention();
+		
+		$model = $model->all();
+
+		return ArrayHelper::map($model, 'filter', 'filter');
 	}
 
 	/**
