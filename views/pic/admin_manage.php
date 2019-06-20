@@ -2,7 +2,7 @@
 /**
  * Ppid Pics (ppid-pic)
  * @var $this app\components\View
- * @var $this ommu\ppid\controllers\o\PicController
+ * @var $this ommu\ppid\controllers\PicController
  * @var $model ommu\ppid\models\PpidPic
  * @var $searchModel ommu\ppid\models\search\PpidPic
  *

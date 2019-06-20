@@ -1,7 +1,7 @@
 <?php
 /**
  * PicController
- * @var $this ommu\ppid\controllers\o\PicController
+ * @var $this ommu\ppid\controllers\PicController
  * @var $model ommu\ppid\models\PpidPic
  *
  * PicController implements the CRUD actions for PpidPic model.
@@ -26,7 +26,7 @@
  *
  */
 
-namespace ommu\ppid\controllers\o;
+namespace ommu\ppid\controllers;
 
 use Yii;
 use yii\filters\VerbFilter;
