@@ -24,6 +24,7 @@ use yii\helpers\ArrayHelper;
 use ommu\article\models\ArticleCategory;
 use ommu\ppid\models\Ppid;
 use ommu\ppid\models\Articles;
+use ommu\ppid\models\PpidSetting;
 ?>
 
 <div class="ppid-form">
@@ -38,7 +39,7 @@ use ommu\ppid\models\Articles;
 <?php // echo $form->errorSummary($model);?>
 <?php // echo $form->errorSummary($article);?>
 
-<?php $category = ArticleCategory::getCategory(1);
+<?php $category = ArticleCategory::getCategory(1, PpidSetting::getInfo('category_id'));
 echo $form->field($article, 'cat_id')
 	->dropDownList($category, ['prompt'=>''])
 	->label($article->getAttributeLabel('cat_id')); ?>
