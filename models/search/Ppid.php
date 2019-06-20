@@ -28,7 +28,7 @@ class Ppid extends PpidModel
 	{
 		return [
 			[['ppid_id', 'pic_id', 'creation_id', 'modified_id'], 'integer'],
-			[['release_year', 'retention', 'creation_date', 'modified_date', 'articleTitle', 'picName', 'creationDisplayname', 'modifiedDisplayname'], 'safe'],
+			[['release_year', 'retention', 'creation_date', 'modified_date', 'articleTitle', 'picName', 'creationDisplayname', 'modifiedDisplayname', 'format'], 'safe'],
 		];
 	}
 
@@ -68,7 +68,8 @@ class Ppid extends PpidModel
 			'article article', 
 			'pic pic', 
 			'creation creation', 
-			'modified modified'
+			'modified modified',
+			'formats formats', 
 		]);
 
 		// add conditions that should always apply here
@@ -101,6 +102,10 @@ class Ppid extends PpidModel
 			'asc' => ['modified.displayname' => SORT_ASC],
 			'desc' => ['modified.displayname' => SORT_DESC],
 		];
+		$attributes['format'] = [
+			'asc' => ['formats.type' => SORT_ASC],
+			'desc' => ['formats.type' => SORT_DESC],
+		];
 		$dataProvider->setSort([
 			'attributes' => $attributes,
 			'defaultOrder' => ['ppid_id' => SORT_DESC],
@@ -124,6 +129,7 @@ class Ppid extends PpidModel
 			't.creation_id' => isset($params['creation']) ? $params['creation'] : $this->creation_id,
 			'cast(t.modified_date as date)' => $this->modified_date,
 			't.modified_id' => isset($params['modified']) ? $params['modified'] : $this->modified_id,
+			'formats.type' => $this->format,
 		]);
 
 		$query->andFilterWhere(['like', 't.release_year', $this->release_year])

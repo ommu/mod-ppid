@@ -10,7 +10,17 @@
  *
  */
 
+use ommu\ppid\Events;
+use ommu\ppid\models\Ppid;
+
 return [
 	'id' => 'ppid',
 	'class' => ommu\ppid\Module::className(),
+	'events' => [
+		[
+			'class'    => Ppid::className(),
+			'event'    => Ppid::EVENT_BEFORE_SAVE_PPIDS,
+			'callback' => [Events::className(), 'onBeforeSavePpids']
+		],
+	],
 ];

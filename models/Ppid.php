@@ -34,16 +34,20 @@ namespace ommu\ppid\models;
 use Yii;
 use yii\helpers\Html;
 use ommu\users\models\Users;
-use ommu\ppid\models\Articles;
+use yii\helpers\ArrayHelper;
+use yii\base\Event;
 
 class Ppid extends \app\components\ActiveRecord
 {
-	public $gridForbiddenColumn = ['creation_date', 'creationDisplayname', 'modified_date', 'modifiedDisplayname'];
+	public $gridForbiddenColumn = ['modified_date', 'modifiedDisplayname'];
 
 	public $articleTitle;
 	public $picName;
 	public $creationDisplayname;
 	public $modifiedDisplayname;
+	public $format;
+
+	const EVENT_BEFORE_SAVE_PPIDS = 'BeforeSavePpids';
 
 	/**
 	 * @return string the associated database table name
@@ -59,12 +63,12 @@ class Ppid extends \app\components\ActiveRecord
 	public function rules()
 	{
 		return [
-			[['ppid_id', 'pic_id', 'release_year', 'retention'], 'required'],
-			[['ppid_id', 'pic_id', 'creation_id', 'modified_id'], 'integer'],
+			[['pic_id', 'release_year', 'retention'], 'required'],
+			[['ppid_id', 'creation_id', 'modified_id'], 'integer'],
+			[['ppid_id'], 'unique'],
+			[['ppid_id', 'format'], 'safe'],
 			[['release_year'], 'string', 'max' => 32],
 			[['retention'], 'string', 'max' => 64],
-			[['ppid_id'], 'unique'],
-			[['pic_id'], 'exist', 'skipOnError' => true, 'targetClass' => PpidPic::className(), 'targetAttribute' => ['pic_id' => 'id']],
 		];
 	}
 
@@ -87,6 +91,7 @@ class Ppid extends \app\components\ActiveRecord
 			'picName' => Yii::t('app', 'Person In Charge'),
 			'creationDisplayname' => Yii::t('app', 'Creation'),
 			'modifiedDisplayname' => Yii::t('app', 'Modified'),
+			'format' => Yii::t('app', 'Format'),
 		];
 	}
 
@@ -109,16 +114,12 @@ class Ppid extends \app\components\ActiveRecord
 	/**
 	 * @return \yii\db\ActiveQuery
 	 */
-	public function getFormats($count=false)
+	public function getFormats($result=false, $val='id')
 	{
-		if($count == false)
-			return $this->hasMany(PpidFormat::className(), ['ppid_id' => 'ppid_id']);
+		if($result == true)
+			return \yii\helpers\ArrayHelper::map($this->formats, 'type', 'id');
 
-		$model = PpidFormat::find()
-			->where(['ppid_id' => $this->ppid_id]);
-		$formats = $model->count();
-
-		return $formats ? $formats : 0;
+		return $this->hasMany(PpidFormat::className(), ['ppid_id' => 'ppid_id']);
 	}
 
 	/**
@@ -193,6 +194,13 @@ class Ppid extends \app\components\ActiveRecord
 				return $model->retention;
 			},
 		];
+		$this->templateColumns['format'] = [
+			'attribute' => 'format',
+			'value' => function($model, $key, $index, $column) {
+				return self::parseFormat(array_flip($model->getFormats(true)), ', ');
+			},
+			'filter' => PpidFormat::getType(),
+		];
 		$this->templateColumns['creation_date'] = [
 			'attribute' => 'creation_date',
 			'value' => function($model, $key, $index, $column) {
@@ -225,16 +233,6 @@ class Ppid extends \app\components\ActiveRecord
 				},
 			];
 		}
-		$this->templateColumns['formats'] = [
-			'attribute' => 'formats',
-			'value' => function($model, $key, $index, $column) {
-				$formats = $model->getFormats(true);
-				return Html::a($formats, ['format/manage', 'ppid'=>$model->primaryKey], ['title'=>Yii::t('app', '{count} formats', ['count'=>$formats])]);
-			},
-			'filter' => false,
-			'contentOptions' => ['class'=>'center'],
-			'format' => 'html',
-		];
 	}
 
 	/**
@@ -256,6 +254,30 @@ class Ppid extends \app\components\ActiveRecord
 	}
 
 	/**
+	 * function parseRelated
+	 */
+	public static function parseFormat($format, $sep='li')
+	{
+		if(!is_array($format) || (is_array($format) && empty($format)))
+			return '-';
+
+		$formats = PpidFormat::getType();
+		$items = [];
+		foreach ($format as $val) {
+			if(array_key_exists($val, $formats))
+				$items[] = $formats[$val];
+		}
+
+		if($sep == 'li') {
+			return Html::ul($items, ['item' => function($item, $index) {
+				return Html::tag('li', $item);
+			}, 'class'=>'list-boxed']);
+		}
+
+		return implode($sep, $items);
+	}
+
+	/**
 	 * after find attributes
 	 */
 	public function afterFind()
@@ -266,6 +288,7 @@ class Ppid extends \app\components\ActiveRecord
 		// $this->picName = isset($this->pic) ? $this->pic->pic_name : '-';
 		// $this->creationDisplayname = isset($this->creation) ? $this->creation->displayname : '-';
 		// $this->modifiedDisplayname = isset($this->modified) ? $this->modified->displayname : '-';
+		$this->format = array_flip($this->getFormats(true));
 	}
 
 	/**
@@ -274,6 +297,7 @@ class Ppid extends \app\components\ActiveRecord
 	public function beforeValidate()
 	{
 		if(parent::beforeValidate()) {
+			$this->ppid_id = 1;
 			if($this->isNewRecord) {
 				if($this->creation_id == null)
 					$this->creation_id = !Yii::$app->user->isGuest ? Yii::$app->user->id : null;
@@ -283,5 +307,44 @@ class Ppid extends \app\components\ActiveRecord
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * before save attributes
+	 */
+	public function beforeSave($insert)
+	{
+		parent::beforeSave($insert);
+
+		// insert new person in charge
+		if(!isset($this->pic)) {
+			$model = new PpidPic();
+			$model->pic_name = $this->pic_id;
+			if($model->save())
+				$this->pic_id = $model->id;
+		}
+		
+		if(!$insert) {
+			// set ppid format
+			$event = new Event(['sender' => $this]);
+			Event::trigger(self::className(), self::EVENT_BEFORE_SAVE_PPIDS, $event);
+		}
+
+		return true;
+	}
+
+	/**
+	 * After save attributes
+	 */
+	public function afterSave($insert, $changedAttributes)
+	{
+		parent::afterSave($insert, $changedAttributes);
+		
+		if($insert) {
+			// set ppid format
+			$event = new Event(['sender' => $this]);
+			Event::trigger(self::className(), self::EVENT_BEFORE_SAVE_PPIDS, $event);
+
+		}
 	}
 }
