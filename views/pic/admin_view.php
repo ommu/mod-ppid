@@ -66,7 +66,7 @@ $attributes = [
 		'attribute' => 'ppids',
 		'value' => function ($model) {
 			$pps = $model->getPpids(true);
-			return Html::a($pps, ['pp/manage', 'pic'=>$model->primaryKey], ['title'=>Yii::t('app', '{count} pps', ['count'=>$pps])]);
+			return Html::a($pps, ['admin/manage', 'pic'=>$model->primaryKey], ['title'=>Yii::t('app', '{count} pps', ['count'=>$pps])]);
 		},
 		'format' => 'html',
 	],

@@ -32,6 +32,10 @@ use app\components\Controller;
 use mdm\admin\components\AccessControl;
 use ommu\ppid\models\Ppid;
 use ommu\ppid\models\search\Ppid as PpidSearch;
+use ommu\ppid\models\Articles;
+use yii\helpers\ArrayHelper;
+use app\components\widgets\ActiveForm;
+use yii\web\UploadedFile;
 
 class AdminController extends Controller
 {
@@ -102,20 +106,31 @@ class AdminController extends Controller
 	public function actionCreate()
 	{
 		$model = new Ppid();
+		$article = new Articles();
+		$setting = $article->getSetting(['media_file_type']);
 
 		if(Yii::$app->request->isPost) {
 			$model->load(Yii::$app->request->post());
+			$article->load(Yii::$app->request->post());
+			$article->file = UploadedFile::getInstance($article, 'file');
 			// $postData = Yii::$app->request->post();
 			// $model->load($postData);
 
-			if($model->save()) {
-				Yii::$app->session->setFlash('success', Yii::t('app', 'PPID information success created.'));
-				return $this->redirect(['manage']);
-				//return $this->redirect(['view', 'id'=>$model->ppid_id]);
+			$isValid = $model->validate();
+			$isValid = $article->validate() && $isValid;
+
+			if($isValid) {
+				$article->save();
+				$model->ppid_id = $article->id;
+				if($model->save()) {
+					Yii::$app->session->setFlash('success', Yii::t('app', 'PPID information success created.'));
+					return $this->redirect(['manage']);
+					//return $this->redirect(['view', 'id'=>$model->ppid_id]);
+				}
 
 			} else {
 				if(Yii::$app->request->isAjax)
-					return \yii\helpers\Json::encode(\app\components\widgets\ActiveForm::validate($model));
+					return \yii\helpers\Json::encode(ArrayHelper::merge(ActiveForm::validate($model), ActiveForm::validate($article)));
 			}
 		}
 
@@ -124,6 +139,8 @@ class AdminController extends Controller
 		$this->view->keywords = '';
 		return $this->render('admin_create', [
 			'model' => $model,
+			'article' => $article,
+			'setting' => $setting,
 		]);
 	}
 
@@ -136,19 +153,28 @@ class AdminController extends Controller
 	public function actionUpdate($id)
 	{
 		$model = $this->findModel($id);
+		$article = Articles::findOne($model->ppid_id);
+		$setting = $article->getSetting(['media_file_limit', 'media_file_type']);
 
 		if(Yii::$app->request->isPost) {
 			$model->load(Yii::$app->request->post());
+			$article->load(Yii::$app->request->post());
+			$article->file = UploadedFile::getInstance($article, 'file');
 			// $postData = Yii::$app->request->post();
 			// $model->load($postData);
 
-			if($model->save()) {
-				Yii::$app->session->setFlash('success', Yii::t('app', 'PPID information success updated.'));
-				return $this->redirect(['manage']);
+			$isValid = $model->validate();
+			$isValid = $article->validate() && $isValid;
+
+			if($isValid) {
+				if($model->save() && $article->save()) {
+					Yii::$app->session->setFlash('success', Yii::t('app', 'PPID information success updated.'));
+					return $this->redirect(['manage']);
+				}
 
 			} else {
 				if(Yii::$app->request->isAjax)
-					return \yii\helpers\Json::encode(\app\components\widgets\ActiveForm::validate($model));
+					return \yii\helpers\Json::encode(ActiveForm::validate($model));
 			}
 		}
 
@@ -157,6 +183,8 @@ class AdminController extends Controller
 		$this->view->keywords = '';
 		return $this->render('admin_update', [
 			'model' => $model,
+			'article' => $article,
+			'setting' => $setting,
 		]);
 	}
 
@@ -168,12 +196,14 @@ class AdminController extends Controller
 	public function actionView($id)
 	{
 		$model = $this->findModel($id);
+		$article = Articles::findOne($model->ppid_id);
 
 		$this->view->title = Yii::t('app', 'Detail PPID Information: {article-title}', ['article-title' => $model->article->title]);
 		$this->view->description = '';
 		$this->view->keywords = '';
 		return $this->oRender('admin_view', [
 			'model' => $model,
+			'article' => $article,
 		]);
 	}
 

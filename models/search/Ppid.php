@@ -27,7 +27,7 @@ class Ppid extends PpidModel
 	public function rules()
 	{
 		return [
-			[['ppid_id', 'pic_id', 'creation_id', 'modified_id'], 'integer'],
+			[['ppid_id', 'pic_id', 'creation_id', 'modified_id', 'articleCatId'], 'integer'],
 			[['release_year', 'retention', 'creation_date', 'modified_date', 'articleTitle', 'picName', 'creationDisplayname', 'modifiedDisplayname', 'format'], 'safe'],
 		];
 	}
@@ -66,6 +66,7 @@ class Ppid extends PpidModel
 			$query = PpidModel::find()->alias('t')->select($column);
 		$query->joinWith([
 			'article article', 
+			'article.category.title category', 
 			'pic pic', 
 			'creation creation', 
 			'modified modified',
@@ -82,6 +83,10 @@ class Ppid extends PpidModel
 		$dataProvider = new ActiveDataProvider($dataParams);
 
 		$attributes = array_keys($this->getTableSchema()->columns);
+		$attributes['articleCatId'] = [
+			'asc' => ['category.message' => SORT_ASC],
+			'desc' => ['category.message' => SORT_DESC],
+		];
 		$attributes['articleTitle'] = [
 			'asc' => ['article.title' => SORT_ASC],
 			'desc' => ['article.title' => SORT_DESC],
@@ -130,6 +135,7 @@ class Ppid extends PpidModel
 			'cast(t.modified_date as date)' => $this->modified_date,
 			't.modified_id' => isset($params['modified']) ? $params['modified'] : $this->modified_id,
 			'formats.type' => $this->format,
+			'article.cat_id' => $this->articleCatId,
 		]);
 
 		$query->andFilterWhere(['like', 't.release_year', $this->release_year])

@@ -197,7 +197,7 @@ class PpidPic extends \app\components\ActiveRecord
 			'attribute' => 'ppids',
 			'value' => function($model, $key, $index, $column) {
 				$ppids = $model->getPpids(true);
-				return Html::a($ppids, ['pp/manage', 'pic'=>$model->primaryKey], ['title'=>Yii::t('app', '{count} ppids', ['count'=>$ppids])]);
+				return Html::a($ppids, ['admin/manage', 'pic'=>$model->primaryKey], ['title'=>Yii::t('app', '{count} ppids', ['count'=>$ppids])]);
 			},
 			'filter' => false,
 			'contentOptions' => ['class'=>'center'],

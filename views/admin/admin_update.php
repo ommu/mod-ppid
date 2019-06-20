@@ -31,6 +31,8 @@ $this->params['menu']['content'] = [
 
 <?php echo $this->render('_form', [
 	'model' => $model,
+	'article' => $article,
+	'setting' => $setting,
 ]); ?>
 
 </div>

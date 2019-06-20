@@ -35,12 +35,14 @@ use Yii;
 use yii\helpers\Html;
 use ommu\users\models\Users;
 use yii\helpers\ArrayHelper;
+use ommu\article\models\ArticleCategory;
 use yii\base\Event;
 
 class Ppid extends \app\components\ActiveRecord
 {
-	public $gridForbiddenColumn = ['modified_date', 'modifiedDisplayname'];
+	public $gridForbiddenColumn = ['creation_date', 'creationDisplayname', 'modified_date', 'modifiedDisplayname'];
 
+	public $articleCatId;
 	public $articleTitle;
 	public $picName;
 	public $creationDisplayname;
@@ -63,10 +65,10 @@ class Ppid extends \app\components\ActiveRecord
 	public function rules()
 	{
 		return [
-			[['pic_id', 'release_year', 'retention'], 'required'],
+			[['pic_id'], 'required'],
 			[['ppid_id', 'creation_id', 'modified_id'], 'integer'],
 			[['ppid_id'], 'unique'],
-			[['ppid_id', 'format'], 'safe'],
+			[['ppid_id', 'release_year', 'retention', 'format'], 'safe'],
 			[['release_year'], 'string', 'max' => 32],
 			[['retention'], 'string', 'max' => 64],
 		];
@@ -87,6 +89,7 @@ class Ppid extends \app\components\ActiveRecord
 			'modified_date' => Yii::t('app', 'Modified Date'),
 			'modified_id' => Yii::t('app', 'Modified'),
 			'formats' => Yii::t('app', 'Formats'),
+			'articleCatId' => Yii::t('app', 'Category'),
 			'articleTitle' => Yii::t('app', 'Information Title'),
 			'picName' => Yii::t('app', 'Person In Charge'),
 			'creationDisplayname' => Yii::t('app', 'Creation'),
@@ -161,6 +164,14 @@ class Ppid extends \app\components\ActiveRecord
 			'header' => Yii::t('app', 'No'),
 			'class' => 'yii\grid\SerialColumn',
 			'contentOptions' => ['class'=>'center'],
+		];
+		$this->templateColumns['articleCatId'] = [
+			'attribute' => 'articleCatId',
+			'value' => function($model, $key, $index, $column) {
+				return isset($model->article) ? $model->article->category->title->message : '-';
+				// return $model->articleCatId;
+			},
+			'filter' => ArticleCategory::getCategory(1),
 		];
 		$this->templateColumns['articleTitle'] = [
 			'attribute' => 'articleTitle',
@@ -284,6 +295,7 @@ class Ppid extends \app\components\ActiveRecord
 	{
 		parent::afterFind();
 
+		// $this->articleCatId = isset($this->article) ? $model->article->category->title->message : '-';
 		// $this->articleTitle = isset($this->article) ? $model->article->title : '-';
 		// $this->picName = isset($this->pic) ? $this->pic->pic_name : '-';
 		// $this->creationDisplayname = isset($this->creation) ? $this->creation->displayname : '-';
@@ -297,7 +309,6 @@ class Ppid extends \app\components\ActiveRecord
 	public function beforeValidate()
 	{
 		if(parent::beforeValidate()) {
-			$this->ppid_id = 1;
 			if($this->isNewRecord) {
 				if($this->creation_id == null)
 					$this->creation_id = !Yii::$app->user->isGuest ? Yii::$app->user->id : null;

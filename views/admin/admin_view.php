@@ -17,6 +17,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 use ommu\ppid\models\Ppid;
+use ommu\ppid\models\Articles;
 
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Ppids'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->pic->pic_name;
@@ -34,6 +35,14 @@ $this->params['menu']['content'] = [
 $attributes = [
 	'ppid_id',
 	[
+		'attribute' => 'article.categoryName',
+		'value' => isset($model->article) ? $model->article->category->title->message : '-',
+	],
+	[
+		'attribute' => 'article.title',
+		'value' => isset($model->article) ? $model->article->title : '-',
+	],
+	[
 		'attribute' => 'picName',
 		'value' => function ($model) {
 			$picName = isset($model->pic) ? $model->pic->pic_name : '-';
@@ -43,8 +52,30 @@ $attributes = [
 		},
 		'format' => 'html',
 	],
-	'release_year',
-	'retention',
+	[
+		'attribute' => 'release_year',
+		'value' => $model->release_year ? $model->release_year : '-',
+		'format' => 'html',
+	],
+	[
+		'attribute' => 'retention',
+		'value' => $model->retention ? $model->retention : '-',
+		'format' => 'html',
+	],
+	[
+		'attribute' => 'article.file',
+		'value' => function ($model) {
+			$uploadPath = join('/', [Articles::getUploadPath(false), $model->ppid_id]);
+			return $model->article->document ? Html::a($model->article->document, Url::to(join('/', ['@webpublic', $uploadPath, $model->article->document])), ['target'=>'_blank']) : '-';
+		},
+		'format' => 'html',
+	],
+	[
+		'attribute' => 'format',
+		'value' => function ($model) {
+			return Ppid::parseFormat(array_flip($model->getFormats(true)), ', ');
+		},
+	],
 	[
 		'attribute' => 'creation_date',
 		'value' => Yii::$app->formatter->asDatetime($model->creation_date, 'medium'),
@@ -60,12 +91,6 @@ $attributes = [
 	[
 		'attribute' => 'modifiedDisplayname',
 		'value' => isset($model->modified) ? $model->modified->displayname : '-',
-	],
-	[
-		'attribute' => 'format',
-		'value' => function ($model) {
-			return Ppid::parseFormat(array_flip($model->getFormats(true)), ', ');
-		},
 	],
 	[
 		'attribute' => '',

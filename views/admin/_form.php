@@ -15,23 +15,36 @@
  */
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use app\components\widgets\ActiveForm;
 use ommu\ppid\models\PpidPic;
 use ommu\ppid\models\PpidFormat;
 use ommu\selectize\Selectize;
 use yii\helpers\ArrayHelper;
+use ommu\article\models\ArticleCategory;
+use ommu\ppid\models\Articles;
 ?>
 
 <div class="ppid-form">
 
 <?php $form = ActiveForm::begin([
 	'options' => ['class'=>'form-horizontal form-label-left'],
-	'enableClientValidation' => true,
+	'enableClientValidation' => false,
 	'enableAjaxValidation' => false,
 	//'enableClientScript' => true,
 ]); ?>
 
-<?php //echo $form->errorSummary($model);?>
+<?php // echo $form->errorSummary($model);?>
+<?php // echo $form->errorSummary($article);?>
+
+<?php $category = ArticleCategory::getCategory(1);
+echo $form->field($article, 'cat_id')
+	->dropDownList($category, ['prompt'=>''])
+	->label($article->getAttributeLabel('cat_id')); ?>
+
+<?php echo $form->field($article, 'title')
+	->textInput(['maxlength'=>true])
+	->label($article->getAttributeLabel('title')); ?>
 
 <?php echo $form->field($model, 'pic_id')
 	->widget(Selectize::className(), [
@@ -55,6 +68,13 @@ use yii\helpers\ArrayHelper;
 	->textInput(['maxlength'=>true])
 	->label($model->getAttributeLabel('retention')); ?>
 
+<?php $uploadPath = join('/', [Articles::getUploadPath(false), $article->id]);
+$file = !$article->isNewRecord && $article->document ? Html::a($article->document, Url::to(join('/', ['@webpublic', $uploadPath, $article->document])), ['class'=>'d-inline-block mb-3']) : '';
+echo $form->field($article, 'file', ['template' => '{label}{beginWrapper}<div>'.$file.'</div>{input}{error}{hint}{endWrapper}'])
+	->fileInput()
+	->label($article->getAttributeLabel('file'))
+	->hint(Yii::t('app', 'extensions are allowed: {extensions}', ['extensions'=>$setting->media_file_type])); ?>
+
 <?php echo $form->field($model, 'format')
 	->widget(Selectize::className(), [
 		'items' => PpidFormat::getType(),
@@ -66,6 +86,10 @@ use yii\helpers\ArrayHelper;
 		],
 	])
 	->label($model->getAttributeLabel('format')); ?>
+
+<?php echo $form->field($article, 'publish')
+	->checkbox()
+	->label($article->getAttributeLabel('publish')); ?>
 
 <div class="ln_solid"></div>
 
