@@ -63,7 +63,7 @@ $attributes = [
 		'value' => Yii::$app->formatter->asDatetime($model->updated_date, 'medium'),
 	],
 	[
-		'attribute' => 'pps',
+		'attribute' => 'ppids',
 		'value' => function ($model) {
 			$pps = $model->getPpids(true);
 			return Html::a($pps, ['pp/manage', 'pic'=>$model->primaryKey], ['title'=>Yii::t('app', '{count} pps', ['count'=>$pps])]);

@@ -100,7 +100,7 @@ class PicController extends Controller
 		}
 		$columns = $searchModel->getGridColumn($cols);
 
-		$this->view->title = Yii::t('app', 'Pics');
+		$this->view->title = Yii::t('app', 'Person In Charges');
 		$this->view->description = '';
 		$this->view->keywords = '';
 		return $this->render('admin_manage', [
@@ -125,7 +125,7 @@ class PicController extends Controller
 			// $model->load($postData);
 
 			if($model->save()) {
-				Yii::$app->session->setFlash('success', Yii::t('app', 'Ppid pic success created.'));
+				Yii::$app->session->setFlash('success', Yii::t('app', 'Person in charge success created.'));
 				return $this->redirect(['manage']);
 				//return $this->redirect(['view', 'id'=>$model->id]);
 
@@ -159,7 +159,7 @@ class PicController extends Controller
 			// $model->load($postData);
 
 			if($model->save()) {
-				Yii::$app->session->setFlash('success', Yii::t('app', 'Ppid pic success updated.'));
+				Yii::$app->session->setFlash('success', Yii::t('app', 'Person in charge success updated.'));
 				return $this->redirect(['manage']);
 
 			} else {
@@ -205,7 +205,7 @@ class PicController extends Controller
 		$model->publish = 2;
 
 		if($model->save(false, ['publish','modified_id'])) {
-			Yii::$app->session->setFlash('success', Yii::t('app', 'Ppid pic success deleted.'));
+			Yii::$app->session->setFlash('success', Yii::t('app', 'Person in charge success deleted.'));
 			return $this->redirect(['manage']);
 		}
 	}
@@ -223,7 +223,7 @@ class PicController extends Controller
 		$model->publish = $replace;
 
 		if($model->save(false, ['publish','modified_id'])) {
-			Yii::$app->session->setFlash('success', Yii::t('app', 'Ppid pic success updated.'));
+			Yii::$app->session->setFlash('success', Yii::t('app', 'Person in charge success updated.'));
 			return $this->redirect(['manage']);
 		}
 	}
