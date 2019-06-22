@@ -28,7 +28,7 @@ class Ppid extends PpidModel
 	{
 		return [
 			[['ppid_id', 'pic_id', 'creation_id', 'modified_id', 'articleCatId'], 'integer'],
-			[['release_year', 'retention', 'creation_date', 'modified_date', 'articleTitle', 'picName', 'creationDisplayname', 'modifiedDisplayname', 'format'], 'safe'],
+			[['release_year', 'retention', 'creation_date', 'modified_date', 'articleTitle', 'picName', 'creationDisplayname', 'modifiedDisplayname', 'format', 'publish'], 'safe'],
 		];
 	}
 
@@ -111,6 +111,10 @@ class Ppid extends PpidModel
 			'asc' => ['formats.type' => SORT_ASC],
 			'desc' => ['formats.type' => SORT_DESC],
 		];
+		$attributes['publish'] = [
+			'asc' => ['article.publish' => SORT_ASC],
+			'desc' => ['article.publish' => SORT_DESC],
+		];
 		$dataProvider->setSort([
 			'attributes' => $attributes,
 			'defaultOrder' => ['ppid_id' => SORT_DESC],
@@ -135,6 +139,7 @@ class Ppid extends PpidModel
 			'cast(t.modified_date as date)' => $this->modified_date,
 			't.modified_id' => isset($params['modified']) ? $params['modified'] : $this->modified_id,
 			'formats.type' => $this->format,
+			'article.publish' => $this->publish,
 			'article.cat_id' => $this->articleCatId,
 		]);
 

@@ -40,6 +40,8 @@ use yii\base\Event;
 
 class Ppid extends \app\components\ActiveRecord
 {
+	use \ommu\traits\UtilityTrait;
+
 	public $gridForbiddenColumn = ['creation_date', 'creationDisplayname', 'modified_date', 'modifiedDisplayname'];
 
 	public $articleCatId;
@@ -48,6 +50,7 @@ class Ppid extends \app\components\ActiveRecord
 	public $creationDisplayname;
 	public $modifiedDisplayname;
 	public $format;
+	public $publish;
 	public $filter;
 
 	const EVENT_BEFORE_SAVE_PPIDS = 'BeforeSavePpids';
@@ -96,6 +99,7 @@ class Ppid extends \app\components\ActiveRecord
 			'creationDisplayname' => Yii::t('app', 'Creation'),
 			'modifiedDisplayname' => Yii::t('app', 'Modified'),
 			'format' => Yii::t('app', 'Format'),
+			'publish' => Yii::t('app', 'Publish'),
 		];
 	}
 
@@ -245,6 +249,17 @@ class Ppid extends \app\components\ActiveRecord
 					return isset($model->modified) ? $model->modified->displayname : '-';
 					// return $model->modifiedDisplayname;
 				},
+			];
+		}
+		if(!Yii::$app->request->get('trash')) {
+			$this->templateColumns['publish'] = [
+				'attribute' => 'publish',
+				'value' => function($model, $key, $index, $column) {
+					return  $this->filterYesNo($model->article->publish);
+				},
+				'filter' => $this->filterYesNo(),
+				'contentOptions' => ['class'=>'center'],
+				'format' => 'raw',
 			];
 		}
 	}
