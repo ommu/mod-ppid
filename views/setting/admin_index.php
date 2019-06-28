@@ -25,7 +25,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 $attributes = [
-	'id',
+	[
+		'attribute' => 'id',
+		'value' => $model->id ? $model->id : '-',
+		'visible' => !$small,
+	],
 	'license',
 	[
 		'attribute' => 'permission',

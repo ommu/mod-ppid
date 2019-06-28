@@ -122,7 +122,7 @@ class Ppid extends \app\components\ActiveRecord
 	/**
 	 * @return \yii\db\ActiveQuery
 	 */
-	public function getFormats($result=false, $val='id')
+	public function getFormats($result=false)
 	{
 		if($result == true)
 			return \yii\helpers\ArrayHelper::map($this->formats, 'type', 'id');
@@ -299,7 +299,7 @@ class Ppid extends \app\components\ActiveRecord
 	}
 
 	/**
-	 * function parseRelated
+	 * function parseFormat
 	 */
 	public static function parseFormat($format, $sep='li')
 	{

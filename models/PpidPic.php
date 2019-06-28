@@ -203,7 +203,7 @@ class PpidPic extends \app\components\ActiveRecord
 			'contentOptions' => ['class'=>'center'],
 			'format' => 'html',
 		];
-if(!Yii::$app->request->get('trash')) {
+		if(!Yii::$app->request->get('trash')) {
 			$this->templateColumns['publish'] = [
 				'attribute' => 'publish',
 				'value' => function($model, $key, $index, $column) {
@@ -214,7 +214,7 @@ if(!Yii::$app->request->get('trash')) {
 				'contentOptions' => ['class'=>'center'],
 				'format' => 'raw',
 			];
-}
+		}
 	}
 
 	/**
