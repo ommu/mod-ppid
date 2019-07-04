@@ -28,6 +28,7 @@ use yii\filters\VerbFilter;
 use app\components\Controller;
 use mdm\admin\components\AccessControl;
 use ommu\ppid\models\PpidSetting;
+use ommu\ppid\models\search\PpidPic as PpidPicSearch;
 
 class SettingController extends Controller
 {
@@ -54,15 +55,48 @@ class SettingController extends Controller
 	 */
 	public function actionIndex()
 	{
+		$this->layout = 'admin_default';
+
 		$model = PpidSetting::findOne(1);
-		if($model == null)
-			return $this->redirect(['update']);
+		if ($model === null) 
+			$model = new PpidSetting(['id'=>1]);
+
+		if(Yii::$app->request->isPost) {
+			$model->load(Yii::$app->request->post());
+			// $postData = Yii::$app->request->post();
+			// $model->load($postData);
+
+			if($model->save()) {
+				Yii::$app->session->setFlash('success', Yii::t('app', 'PPID setting success updated.'));
+				return $this->redirect(['update']);
+
+			} else {
+				if(Yii::$app->request->isAjax)
+					return \yii\helpers\Json::encode(\app\components\widgets\ActiveForm::validate($model));
+			}
+		}
+
+		$searchModel = new PpidPicSearch();
+		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+		$gridColumn = Yii::$app->request->get('GridColumn', null);
+		$cols = [];
+		if($gridColumn != null && count($gridColumn) > 0) {
+			foreach($gridColumn as $key => $val) {
+				if($gridColumn[$key] == 1)
+					$cols[] = $key;
+			}
+		}
+		$columns = $searchModel->getGridColumn($cols);
 
 		$this->view->title = Yii::t('app', 'PPID Settings');
 		$this->view->description = '';
 		$this->view->keywords = '';
 		return $this->oRender('admin_index', [
 			'model' => $model,
+			'searchModel' => $searchModel,
+			'dataProvider' => $dataProvider,
+			'columns' => $columns,
 		]);
 	}
 
@@ -83,7 +117,7 @@ class SettingController extends Controller
 			// $model->load($postData);
 
 			if($model->save()) {
-				Yii::$app->session->setFlash('success', Yii::t('app', 'Ppid setting success updated.'));
+				Yii::$app->session->setFlash('success', Yii::t('app', 'PPID setting success updated.'));
 				return $this->redirect(['update']);
 				//return $this->redirect(['view', 'id'=>$model->id]);
 
@@ -93,6 +127,7 @@ class SettingController extends Controller
 			}
 		}
 
+		$this->subMenu = $this->module->params['setting_submenu'];
 		$this->view->title = Yii::t('app', 'PPID Settings');
 		$this->view->description = '';
 		$this->view->keywords = '';
@@ -112,7 +147,7 @@ class SettingController extends Controller
 		$model = $this->findModel($id);
 		$model->delete();
 
-		Yii::$app->session->setFlash('success', Yii::t('app', 'Ppid setting success deleted.'));
+		Yii::$app->session->setFlash('success', Yii::t('app', 'PPID setting success deleted.'));
 		return $this->redirect(['index']);
 	}
 

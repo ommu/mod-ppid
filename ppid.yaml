@@ -1,0 +1,9 @@
+setting_submenu:
+  update:
+    label: Settings
+    url: ['setting/update']
+    select: action
+  category:
+    label: Person In Charges
+    url: ['pic/index']
+    select: controller

@@ -44,11 +44,11 @@ array_push($columnData, [
 	'header' => Yii::t('app', 'Option'),
 	'urlCreator' => function($action, $model, $key, $index) {
 		if($action == 'view')
-			return Url::to(['view', 'id'=>$key]);
+			return Url::to(['pic/view', 'id'=>$key]);
 		if($action == 'update')
-			return Url::to(['update', 'id'=>$key]);
+			return Url::to(['pic/update', 'id'=>$key]);
 		if($action == 'delete')
-			return Url::to(['delete', 'id'=>$key]);
+			return Url::to(['pic/delete', 'id'=>$key]);
 	},
 	'buttons' => [
 		'view' => function ($url, $model, $key) {

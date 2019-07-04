@@ -21,53 +21,13 @@ use ommu\ppid\models\PpidSetting;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="ppid-setting-index">
-
-<?php
-$attributes = [
-	[
-		'attribute' => 'id',
-		'value' => $model->id ? $model->id : '-',
-		'visible' => !$small,
-	],
-	'license',
-	[
-		'attribute' => 'permission',
-		'value' => PpidSetting::getPermission($model->permission),
-	],
-	[
-		'attribute' => 'meta_description',
-		'value' => $model->meta_description ? $model->meta_description : '-',
-	],
-	[
-		'attribute' => 'meta_keyword',
-		'value' => $model->meta_keyword ? $model->meta_keyword : '-',
-	],
-	[
-		'attribute' => 'category_id',
-		'value' => isset($model->category) ? $model->category->title->message : '-',
-	],
-	[
-		'attribute' => 'modified_date',
-		'value' => Yii::$app->formatter->asDatetime($model->modified_date, 'medium'),
-	],
-	[
-		'attribute' => 'modifiedDisplayname',
-		'value' => isset($model->modified) ? $model->modified->displayname : '-',
-	],
-	[
-		'attribute' => '',
-		'value' => Html::a(Yii::t('app', 'Update'), ['update', 'id'=>$model->primaryKey], ['title'=>Yii::t('app', 'Update'), 'class'=>'btn btn-primary']),
-		'format' => 'html',
-	],
-];
-
-echo DetailView::widget([
-	'model' => $model,
-	'options' => [
-		'class'=>'table table-striped detail-view',
-	],
-	'attributes' => $attributes,
+<?php echo $this->renderWidget('/pic/admin_manage', [
+	'contentMenu' => true,
+	'searchModel' => $searchModel,
+	'dataProvider' => $dataProvider,
+	'columns' => $columns,
 ]); ?>
 
-</div>
+<?php echo $this->renderWidget(!$model->isNewRecord ? 'admin_view' : 'admin_update', [
+	'model'=>$model,
+]); ?>

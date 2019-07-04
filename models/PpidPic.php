@@ -207,7 +207,7 @@ class PpidPic extends \app\components\ActiveRecord
 			$this->templateColumns['publish'] = [
 				'attribute' => 'publish',
 				'value' => function($model, $key, $index, $column) {
-					$url = Url::to(['publish', 'id'=>$model->primaryKey]);
+					$url = Url::to(['pic/publish', 'id'=>$model->primaryKey]);
 					return $this->quickAction($url, $model->publish);
 				},
 				'filter' => $this->filterYesNo(),

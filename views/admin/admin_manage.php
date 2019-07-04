@@ -35,30 +35,8 @@ $this->params['menu']['option'] = [
 <div class="ppid-manage">
 <?php Pjax::begin(); ?>
 
-<?php if($pic != null) {
-$model = $pic;
-echo DetailView::widget([
-	'model' => $model,
-	'options' => [
-		'class'=>'table table-striped detail-view',
-	],
-	'attributes' => [
-		[
-			'attribute' => 'pic_name',
-			'value' => function ($model) {
-				if($model->pic_name != '')
-					return Html::a($model->pic_name, ['pic/view', 'id'=>$model->id], ['title'=>$model->pic_name, 'class'=>'modal-btn']);
-				return $model->pic_name;
-			},
-			'format' => 'html',
-		],
-		[
-			'attribute' => 'pic_desc',
-			'value' => $model->pic_desc ? $model->pic_desc : '-',
-		],
-	],
-]);
-}?>
+<?php if($pic != null)
+	echo $this->render('/pic/admin_view', ['model'=>$pic, 'small'=>true]); ?>
 
 <?php //echo $this->render('_search', ['model'=>$searchModel]); ?>
 
