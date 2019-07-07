@@ -71,7 +71,8 @@ class Ppid extends PpidModel
 			'creation creation', 
 			'modified modified',
 			'formats formats', 
-		]);
+		])
+		->groupBy(['ppid_id']);
 
 		// add conditions that should always apply here
 		$dataParams = [

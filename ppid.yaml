@@ -3,7 +3,7 @@ setting_submenu:
     label: Settings
     url: ['setting/update']
     select: action
-  category:
+  pic:
     label: Person In Charges
     url: ['pic/index']
     select: controller
