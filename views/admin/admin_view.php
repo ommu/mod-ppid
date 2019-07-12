@@ -67,7 +67,7 @@ $attributes = [
 		'attribute' => 'article.file',
 		'value' => function ($model) {
 			$uploadPath = join('/', [Articles::getUploadPath(false), $model->ppid_id]);
-			return $model->article->document ? Html::a($model->article->document, Url::to(join('/', ['@webpublic', $uploadPath, $model->article->document])), ['target'=>'_blank']) : '-';
+			return $model->article->document ? Html::a($model->article->document, Url::to(join('/', ['@webpublic', $uploadPath, $model->article->document])), ['title'=>$model->article->document, 'target'=>'_blank']) : '-';
 		},
 		'format' => 'html',
 	],

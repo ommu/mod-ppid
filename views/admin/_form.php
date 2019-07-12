@@ -96,7 +96,7 @@ echo $form->field($article, 'cat_id')
 	->label($model->getAttributeLabel('retention')); ?>
 
 <?php $uploadPath = join('/', [Articles::getUploadPath(false), $article->id]);
-$file = !$article->isNewRecord && $article->document ? Html::a($article->document, Url::to(join('/', ['@webpublic', $uploadPath, $article->document])), ['class'=>'d-inline-block mb-3']) : '';
+$file = !$article->isNewRecord && $article->document ? Html::a($article->document, Url::to(join('/', ['@webpublic', $uploadPath, $article->document])), ['title'=>$article->document, 'target'=>'_blank', 'class'=>'d-inline-block mb-3']) : '';
 echo $form->field($article, 'file', ['template' => '{label}{beginWrapper}<div>'.$file.'</div>{input}{error}{hint}{endWrapper}'])
 	->fileInput()
 	->label($article->getAttributeLabel('file'))
