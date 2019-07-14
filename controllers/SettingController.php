@@ -142,13 +142,13 @@ class SettingController extends Controller
 	 * @param integer $id
 	 * @return mixed
 	 */
-	public function actionDelete($id)
+	public function actionDelete()
 	{
-		$model = $this->findModel($id);
+		$model = $this->findModel(1);
 		$model->delete();
 
 		Yii::$app->session->setFlash('success', Yii::t('app', 'PPID setting success deleted.'));
-		return $this->redirect(['index']);
+		return $this->redirect(Yii::$app->request->referrer ?: ['index']);
 	}
 
 	/**

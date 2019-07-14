@@ -135,7 +135,7 @@ class PicController extends Controller
 
 			if($model->save()) {
 				Yii::$app->session->setFlash('success', Yii::t('app', 'Person in charge success created.'));
-				return $this->redirect(['manage']);
+				return $this->redirect(Yii::$app->request->referrer ?: ['manage']);
 				//return $this->redirect(['view', 'id'=>$model->id]);
 
 			} else {
@@ -147,7 +147,7 @@ class PicController extends Controller
 		$this->view->title = Yii::t('app', 'Create PIC');
 		$this->view->description = '';
 		$this->view->keywords = '';
-		return $this->render('admin_create', [
+		return $this->oRender('admin_create', [
 			'model' => $model,
 		]);
 	}
@@ -169,7 +169,7 @@ class PicController extends Controller
 
 			if($model->save()) {
 				Yii::$app->session->setFlash('success', Yii::t('app', 'Person in charge success updated.'));
-				return $this->redirect(['manage']);
+				return $this->redirect(Yii::$app->request->referrer ?: ['manage']);
 
 			} else {
 				if(Yii::$app->request->isAjax)
@@ -180,7 +180,7 @@ class PicController extends Controller
 		$this->view->title = Yii::t('app', 'Update PIC: {pic-name}', ['pic-name' => $model->pic_name]);
 		$this->view->description = '';
 		$this->view->keywords = '';
-		return $this->render('admin_update', [
+		return $this->oRender('admin_update', [
 			'model' => $model,
 		]);
 	}
@@ -215,7 +215,7 @@ class PicController extends Controller
 
 		if($model->save(false, ['publish','modified_id'])) {
 			Yii::$app->session->setFlash('success', Yii::t('app', 'Person in charge success deleted.'));
-			return $this->redirect(['manage']);
+			return $this->redirect(Yii::$app->request->referrer ?: ['manage']);
 		}
 	}
 
@@ -233,7 +233,7 @@ class PicController extends Controller
 
 		if($model->save(false, ['publish','modified_id'])) {
 			Yii::$app->session->setFlash('success', Yii::t('app', 'Person in charge success updated.'));
-			return $this->redirect(['manage']);
+			return $this->redirect(Yii::$app->request->referrer ?: ['manage']);
 		}
 	}
 
