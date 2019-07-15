@@ -16,7 +16,6 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
-use ommu\ppid\models\PpidSetting;
 
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -38,7 +37,7 @@ $attributes = [
 	'license',
 	[
 		'attribute' => 'permission',
-		'value' => PpidSetting::getPermission($model->permission),
+		'value' => $model::getPermission($model->permission),
 	],
 	[
 		'attribute' => 'meta_description',
