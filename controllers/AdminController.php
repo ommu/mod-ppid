@@ -115,6 +115,7 @@ class AdminController extends Controller
 			$article->file = UploadedFile::getInstance($article, 'file');
 			// $postData = Yii::$app->request->post();
 			// $model->load($postData);
+			// $model->order = $postData['order'] ? $postData['order'] : 0;
 
 			$isValid = $model->validate();
 			$isValid = $article->validate() && $isValid;
@@ -162,6 +163,7 @@ class AdminController extends Controller
 			$article->file = UploadedFile::getInstance($article, 'file');
 			// $postData = Yii::$app->request->post();
 			// $model->load($postData);
+			// $model->order = $postData['order'] ? $postData['order'] : 0;
 
 			$isValid = $model->validate();
 			$isValid = $article->validate() && $isValid;
