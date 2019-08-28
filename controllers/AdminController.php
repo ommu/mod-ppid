@@ -171,7 +171,7 @@ class AdminController extends Controller
 			if($isValid) {
 				if($model->save() && $article->save()) {
 					Yii::$app->session->setFlash('success', Yii::t('app', 'PPID information success updated.'));
-					return $this->redirect(['manage']);
+					return $this->redirect(['update', 'id'=>$model->ppid_id]);
 				}
 
 			} else {
