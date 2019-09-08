@@ -96,7 +96,8 @@ class PpidPic extends \app\components\ActiveRecord
 			return $this->hasMany(Ppid::className(), ['pic_id' => 'id']);
 
 		$model = Ppid::find()
-			->where(['pic_id' => $this->id]);
+			->alias('t')
+			->where(['t.pic_id' => $this->id]);
 		$ppids = $model->count();
 
 		return $ppids ? $ppids : 0;
