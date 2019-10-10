@@ -38,8 +38,9 @@ class PicSuggestAction extends \yii\base\Action
 		if($term == null) return [];
 
 		$model = PpidPic::find()
+			->alias('t')
 			->suggest()
-			->andWhere(['like', 'pic_name', $term])
+			->andWhere(['like', 't.pic_name', $term])
 			->limit(15)
 			->all();
 

@@ -149,7 +149,7 @@ class SettingController extends Controller
 		$model = $this->findModel(1);
 		$model->delete();
 
-		Yii::$app->session->setFlash('success', Yii::t('app', 'PPID setting success deleted.'));
+		Yii::$app->session->setFlash('success', Yii::t('app', 'PPID setting success reset.'));
 		return $this->redirect(Yii::$app->request->referrer ?: ['index']);
 	}
 
