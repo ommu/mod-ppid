@@ -189,17 +189,16 @@ class Ppid extends \app\components\ActiveRecord
 				// return $model->articleTitle;
 			},
 		];
-		if(!Yii::$app->request->get('pic')) {
-			$this->templateColumns['pic_id'] = [
-				'attribute' => 'pic_id',
-				'label' => Yii::t('app', 'PIC'),
-				'value' => function($model, $key, $index, $column) {
-					return isset($model->pic) ? $model->pic->pic_name : '-';
-					// return $model->picName;
-				},
-				'filter' => PpidPic::getPic(),
-			];
-		}
+		$this->templateColumns['pic_id'] = [
+			'attribute' => 'pic_id',
+			'label' => Yii::t('app', 'PIC'),
+			'value' => function($model, $key, $index, $column) {
+				return isset($model->pic) ? $model->pic->pic_name : '-';
+				// return $model->picName;
+			},
+			'filter' => PpidPic::getPic(),
+			'visible' => !Yii::$app->request->get('pic') ? true : false,
+		];
 		$this->templateColumns['release_year'] = [
 			'attribute' => 'release_year',
 			'label' => Yii::t('app', 'Release'),
@@ -229,15 +228,14 @@ class Ppid extends \app\components\ActiveRecord
 			},
 			'filter' => $this->filterDatepicker($this, 'creation_date'),
 		];
-		if(!Yii::$app->request->get('creation')) {
-			$this->templateColumns['creationDisplayname'] = [
-				'attribute' => 'creationDisplayname',
-				'value' => function($model, $key, $index, $column) {
-					return isset($model->creation) ? $model->creation->displayname : '-';
-					// return $model->creationDisplayname;
-				},
-			];
-		}
+		$this->templateColumns['creationDisplayname'] = [
+			'attribute' => 'creationDisplayname',
+			'value' => function($model, $key, $index, $column) {
+				return isset($model->creation) ? $model->creation->displayname : '-';
+				// return $model->creationDisplayname;
+			},
+			'visible' => !Yii::$app->request->get('creation') ? true : false,
+		];
 		$this->templateColumns['modified_date'] = [
 			'attribute' => 'modified_date',
 			'value' => function($model, $key, $index, $column) {
@@ -245,26 +243,24 @@ class Ppid extends \app\components\ActiveRecord
 			},
 			'filter' => $this->filterDatepicker($this, 'modified_date'),
 		];
-		if(!Yii::$app->request->get('modified')) {
-			$this->templateColumns['modifiedDisplayname'] = [
-				'attribute' => 'modifiedDisplayname',
-				'value' => function($model, $key, $index, $column) {
-					return isset($model->modified) ? $model->modified->displayname : '-';
-					// return $model->modifiedDisplayname;
-				},
-			];
-		}
-		if(!Yii::$app->request->get('trash')) {
-			$this->templateColumns['publish'] = [
-				'attribute' => 'publish',
-				'value' => function($model, $key, $index, $column) {
-					return  $this->filterYesNo($model->article->publish);
-				},
-				'filter' => $this->filterYesNo(),
-				'contentOptions' => ['class'=>'center'],
-				'format' => 'raw',
-			];
-		}
+		$this->templateColumns['modifiedDisplayname'] = [
+			'attribute' => 'modifiedDisplayname',
+			'value' => function($model, $key, $index, $column) {
+				return isset($model->modified) ? $model->modified->displayname : '-';
+				// return $model->modifiedDisplayname;
+			},
+			'visible' => !Yii::$app->request->get('modified') ? true : false,
+		];
+		$this->templateColumns['publish'] = [
+			'attribute' => 'publish',
+			'value' => function($model, $key, $index, $column) {
+				return  $this->filterYesNo($model->article->publish);
+			},
+			'filter' => $this->filterYesNo(),
+			'contentOptions' => ['class'=>'center'],
+			'format' => 'raw',
+			'visible' => !Yii::$app->request->get('trash') ? true : false,
+		];
 	}
 
 	/**
