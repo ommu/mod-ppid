@@ -27,9 +27,9 @@
 namespace ommu\ppid\controllers;
 
 use Yii;
-use yii\filters\VerbFilter;
 use app\components\Controller;
 use mdm\admin\components\AccessControl;
+use yii\filters\VerbFilter;
 use ommu\ppid\models\Ppid;
 use ommu\ppid\models\search\Ppid as PpidSearch;
 use ommu\ppid\models\Articles;
@@ -176,7 +176,7 @@ class AdminController extends Controller
 
 			} else {
 				if(Yii::$app->request->isAjax)
-					return \yii\helpers\Json::encode(ActiveForm::validate($model));
+					return \yii\helpers\Json::encode(ArrayHelper::merge(ActiveForm::validate($model), ActiveForm::validate($article)));
 			}
 		}
 
