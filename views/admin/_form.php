@@ -118,7 +118,7 @@ echo $form->field($article, 'file', ['template' => '{label}{beginWrapper}<div>'.
 	->checkbox()
 	->label($article->getAttributeLabel('publish')); ?>
 
-<div class="ln_solid"></div>
+<hr/>
 
 <?php echo $form->field($model, 'submitButton')
 	->submitButton(); ?>

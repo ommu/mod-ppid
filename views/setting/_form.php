@@ -61,7 +61,7 @@ echo $form->field($model, 'category_id')
 	->dropDownList($category, ['prompt'=>''])
 	->label($model->getAttributeLabel('category_id')); ?>
 
-<div class="ln_solid"></div>
+<hr/>
 
 <?php echo $form->field($model, 'submitButton')
 	->submitButton(); ?>
