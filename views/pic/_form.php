@@ -39,7 +39,7 @@ use app\components\widgets\ActiveForm;
 	->label($model->getAttributeLabel('pic_name')); ?>
 
 <?php echo $form->field($model, 'pic_desc')
-	->textarea(['rows'=>6, 'cols'=>50])
+	->textarea(['rows'=>4, 'cols'=>50])
 	->label($model->getAttributeLabel('pic_desc')); ?>
 
 <?php if($model->isNewRecord && !$model->getErrors())

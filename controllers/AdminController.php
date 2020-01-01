@@ -135,7 +135,7 @@ class AdminController extends Controller
 			}
 		}
 
-		$this->view->title = Yii::t('app', 'Create PPID Information');
+		$this->view->title = Yii::t('app', 'Create PPID');
 		$this->view->description = '';
 		$this->view->keywords = '';
 		return $this->render('admin_create', [
@@ -180,7 +180,7 @@ class AdminController extends Controller
 			}
 		}
 
-		$this->view->title = Yii::t('app', 'Update PPID Information: {article-title}', ['article-title' => $model->article->title]);
+		$this->view->title = Yii::t('app', 'Update PPID: {article-title}', ['article-title' => $model->article->title]);
 		$this->view->description = '';
 		$this->view->keywords = '';
 		return $this->render('admin_update', [
@@ -200,7 +200,7 @@ class AdminController extends Controller
 		$model = $this->findModel($id);
 		$article = Articles::findOne($model->ppid_id);
 
-		$this->view->title = Yii::t('app', 'Detail PPID Information: {article-title}', ['article-title' => $model->article->title]);
+		$this->view->title = Yii::t('app', 'Detail PPID: {article-title}', ['article-title' => $model->article->title]);
 		$this->view->description = '';
 		$this->view->keywords = '';
 		return $this->oRender('admin_view', [

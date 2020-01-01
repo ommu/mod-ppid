@@ -17,7 +17,10 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 
-$this->params['breadcrumbs'][] = $this->title;
+if($breadcrumb) {
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Settings'), 'url' => ['/setting/update']];
+$this->params['breadcrumbs'][] = Yii::t('app', 'PPID');
+}
 
 if(!$small) {
 $this->params['menu']['content'] = [
