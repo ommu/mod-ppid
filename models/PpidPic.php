@@ -144,7 +144,7 @@ class PpidPic extends \app\components\ActiveRecord
 		$this->templateColumns['_no'] = [
 			'header' => '#',
 			'class' => 'yii\grid\SerialColumn',
-			'contentOptions' => ['class'=>'center'],
+			'contentOptions' => ['class'=>'text-center'],
 		];
 		$this->templateColumns['pic_name'] = [
 			'attribute' => 'pic_name',
@@ -202,7 +202,7 @@ class PpidPic extends \app\components\ActiveRecord
 				return Html::a($ppids, ['admin/manage', 'pic'=>$model->primaryKey], ['title'=>Yii::t('app', '{count} ppids', ['count'=>$ppids])]);
 			},
 			'filter' => false,
-			'contentOptions' => ['class'=>'center'],
+			'contentOptions' => ['class'=>'text-center'],
 			'format' => 'html',
 		];
 		$this->templateColumns['publish'] = [
@@ -212,7 +212,7 @@ class PpidPic extends \app\components\ActiveRecord
 				return $this->quickAction($url, $model->publish);
 			},
 			'filter' => $this->filterYesNo(),
-			'contentOptions' => ['class'=>'center'],
+			'contentOptions' => ['class'=>'text-center'],
 			'format' => 'raw',
 			'visible' => !Yii::$app->request->get('trash') ? true : false,
 		];

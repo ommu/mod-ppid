@@ -171,7 +171,7 @@ class Ppid extends \app\components\ActiveRecord
 		$this->templateColumns['_no'] = [
 			'header' => '#',
 			'class' => 'yii\grid\SerialColumn',
-			'contentOptions' => ['class'=>'center'],
+			'contentOptions' => ['class'=>'text-center'],
 		];
 		$this->templateColumns['articleCatId'] = [
 			'attribute' => 'articleCatId',
@@ -257,7 +257,7 @@ class Ppid extends \app\components\ActiveRecord
 				return  $this->filterYesNo($model->article->publish);
 			},
 			'filter' => $this->filterYesNo(),
-			'contentOptions' => ['class'=>'center'],
+			'contentOptions' => ['class'=>'text-center'],
 			'format' => 'raw',
 			'visible' => !Yii::$app->request->get('trash') ? true : false,
 		];
