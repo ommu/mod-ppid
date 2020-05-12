@@ -33,7 +33,7 @@ namespace ommu\ppid\models;
 
 use Yii;
 use yii\helpers\Html;
-use ommu\users\models\Users;
+use app\models\Users;
 use yii\helpers\ArrayHelper;
 use ommu\article\models\ArticleCategory;
 use yii\base\Event;

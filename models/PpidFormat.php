@@ -26,7 +26,7 @@
 namespace ommu\ppid\models;
 
 use Yii;
-use ommu\users\models\Users;
+use app\models\Users;
 
 class PpidFormat extends \app\components\ActiveRecord
 {

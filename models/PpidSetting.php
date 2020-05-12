@@ -29,7 +29,7 @@ namespace ommu\ppid\models;
 
 use Yii;
 use ommu\article\models\ArticleCategory;
-use ommu\users\models\Users;
+use app\models\Users;
 
 class PpidSetting extends \app\components\ActiveRecord
 {
