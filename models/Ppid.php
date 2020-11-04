@@ -124,8 +124,9 @@ class Ppid extends \app\components\ActiveRecord
 	 */
 	public function getFormats($result=false)
 	{
-		if($result == true)
-			return \yii\helpers\ArrayHelper::map($this->formats, 'type', 'id');
+        if ($result == true) {
+            return \yii\helpers\ArrayHelper::map($this->formats, 'type', 'id');
+        }
 
 		return $this->hasMany(PpidFormat::className(), ['ppid_id' => 'ppid_id']);
 	}
@@ -162,11 +163,13 @@ class Ppid extends \app\components\ActiveRecord
 	{
 		parent::init();
 
-		if(!(Yii::$app instanceof \app\components\Application))
-			return;
+        if (!(Yii::$app instanceof \app\components\Application)) {
+            return;
+        }
 
-		if(!$this->hasMethod('search'))
-			return;
+        if (!$this->hasMethod('search')) {
+            return;
+        }
 
 		$this->templateColumns['_no'] = [
 			'header' => '#',
@@ -268,19 +271,20 @@ class Ppid extends \app\components\ActiveRecord
 	 */
 	public static function getInfo($id, $column=null)
 	{
-		if($column != null) {
-			$model = self::find();
-			if(is_array($column))
-				$model->select($column);
-			else
-				$model->select([$column]);
-			$model = $model->where(['ppid_id' => $id])->one();
-			return is_array($column) ? $model : $model->$column;
-			
-		} else {
-			$model = self::findOne($id);
-			return $model;
-		}
+        if ($column != null) {
+            $model = self::find();
+            if (is_array($column)) {
+                $model->select($column);
+            } else {
+                $model->select([$column]);
+            }
+            $model = $model->where(['ppid_id' => $id])->one();
+            return is_array($column) ? $model : $model->$column;
+
+        } else {
+            $model = self::findOne($id);
+            return $model;
+        }
 	}
 
 	/**
@@ -289,10 +293,11 @@ class Ppid extends \app\components\ActiveRecord
 	public static function getFilter($filter='release')
 	{
 		$model = self::find();
-		if($filter == 'release')
-			$model->filterRelease();
-		else if($filter == 'retention')
-			$model->filterRetention();
+        if ($filter == 'release') {
+            $model->filterRelease();
+        } else if ($filter == 'retention') {
+            $model->filterRetention();
+        }
 		
 		$model = $model->all();
 
@@ -304,17 +309,19 @@ class Ppid extends \app\components\ActiveRecord
 	 */
 	public static function parseFormat($format, $sep='li')
 	{
-		if(!is_array($format) || (is_array($format) && empty($format)))
-			return '-';
+        if (!is_array($format) || (is_array($format) && empty($format))) {
+            return '-';
+        }
 
 		$formats = PpidFormat::getType();
 		$items = [];
 		foreach ($format as $val) {
-			if(array_key_exists($val, $formats))
-				$items[] = $formats[$val];
+            if (array_key_exists($val, $formats)) {
+                $items[] = $formats[$val];
+            }
 		}
 
-		if($sep == 'li') {
+        if ($sep == 'li') {
 			return Html::ul($items, ['item' => function($item, $index) {
 				return Html::tag('li', $item);
 			}, 'class'=>'list-boxed']);
@@ -343,16 +350,18 @@ class Ppid extends \app\components\ActiveRecord
 	 */
 	public function beforeValidate()
 	{
-		if(parent::beforeValidate()) {
-			if($this->isNewRecord) {
-				if($this->creation_id == null)
-					$this->creation_id = !Yii::$app->user->isGuest ? Yii::$app->user->id : null;
-			} else {
-				if($this->modified_id == null)
-					$this->modified_id = !Yii::$app->user->isGuest ? Yii::$app->user->id : null;
-			}
-		}
-		return true;
+        if (parent::beforeValidate()) {
+            if ($this->isNewRecord) {
+                if ($this->creation_id == null) {
+                    $this->creation_id = !Yii::$app->user->isGuest ? Yii::$app->user->id : null;
+                }
+            } else {
+                if ($this->modified_id == null) {
+                    $this->modified_id = !Yii::$app->user->isGuest ? Yii::$app->user->id : null;
+                }
+            }
+        }
+        return true;
 	}
 
 	/**
@@ -363,14 +372,15 @@ class Ppid extends \app\components\ActiveRecord
 		parent::beforeSave($insert);
 
 		// insert new person in charge
-		if(!isset($this->pic)) {
+        if (!isset($this->pic)) {
 			$model = new PpidPic();
 			$model->pic_name = $this->pic_id;
-			if($model->save())
-				$this->pic_id = $model->id;
+            if ($model->save()) {
+                $this->pic_id = $model->id;
+            }
 		}
 		
-		if(!$insert) {
+        if (!$insert) {
 			// set ppid format
 			$event = new Event(['sender' => $this]);
 			Event::trigger(self::className(), self::EVENT_BEFORE_SAVE_PPIDS, $event);
@@ -384,9 +394,9 @@ class Ppid extends \app\components\ActiveRecord
 	 */
 	public function afterSave($insert, $changedAttributes)
 	{
-		parent::afterSave($insert, $changedAttributes);
-		
-		if($insert) {
+        parent::afterSave($insert, $changedAttributes);
+
+        if ($insert) {
 			// set ppid format
 			$event = new Event(['sender' => $this]);
 			Event::trigger(self::className(), self::EVENT_BEFORE_SAVE_PPIDS, $event);

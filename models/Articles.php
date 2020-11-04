@@ -21,7 +21,7 @@ class Articles extends \ommu\article\models\Articles
 	 */
 	public function beforeValidate()
 	{
-		if(parent::beforeValidate()) {
+        if (parent::beforeValidate()) {
 			$this->body = '-';
 			$this->clearErrors('image');
 		}

@@ -96,18 +96,19 @@ class PicController extends Controller
 	 */
 	public function actionManage()
 	{
-		$searchModel = new PpidPicSearch();
-		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $searchModel = new PpidPicSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-		$gridColumn = Yii::$app->request->get('GridColumn', null);
-		$cols = [];
-		if($gridColumn != null && count($gridColumn) > 0) {
-			foreach($gridColumn as $key => $val) {
-				if($gridColumn[$key] == 1)
-					$cols[] = $key;
-			}
-		}
-		$columns = $searchModel->getGridColumn($cols);
+        $gridColumn = Yii::$app->request->get('GridColumn', null);
+        $cols = [];
+        if ($gridColumn != null && count($gridColumn) > 0) {
+            foreach ($gridColumn as $key => $val) {
+                if ($gridColumn[$key] == 1) {
+                    $cols[] = $key;
+                }
+            }
+        }
+        $columns = $searchModel->getGridColumn($cols);
 
 		$this->view->title = Yii::t('app', 'Person In Charges');
 		$this->view->description = '';
@@ -129,22 +130,24 @@ class PicController extends Controller
 	{
 		$model = new PpidPic();
 
-		if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
 			$model->load(Yii::$app->request->post());
 			// $postData = Yii::$app->request->post();
 			// $model->load($postData);
 			// $model->order = $postData['order'] ? $postData['order'] : 0;
 
-			if($model->save()) {
+            if ($model->save()) {
 				Yii::$app->session->setFlash('success', Yii::t('app', 'Person in charge success created.'));
-				if(!Yii::$app->request->isAjax)
-					return $this->redirect(['manage']);
+                if (!Yii::$app->request->isAjax) {
+                    return $this->redirect(['manage']);
+                }
 				return $this->redirect(Yii::$app->request->referrer ?: ['manage']);
 				//return $this->redirect(['view', 'id'=>$model->id]);
 
-			} else {
-				if(Yii::$app->request->isAjax)
-					return \yii\helpers\Json::encode(\app\components\widgets\ActiveForm::validate($model));
+            } else {
+                if (Yii::$app->request->isAjax) {
+                    return \yii\helpers\Json::encode(\app\components\widgets\ActiveForm::validate($model));
+                }
 			}
 		}
 
@@ -166,21 +169,23 @@ class PicController extends Controller
 	{
 		$model = $this->findModel($id);
 
-		if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
 			$model->load(Yii::$app->request->post());
 			// $postData = Yii::$app->request->post();
 			// $model->load($postData);
 			// $model->order = $postData['order'] ? $postData['order'] : 0;
 
-			if($model->save()) {
+            if ($model->save()) {
 				Yii::$app->session->setFlash('success', Yii::t('app', 'Person in charge success updated.'));
-				if(!Yii::$app->request->isAjax)
-					return $this->redirect(['manage']);
+                if (!Yii::$app->request->isAjax) {
+                    return $this->redirect(['manage']);
+                }
 				return $this->redirect(Yii::$app->request->referrer ?: ['manage']);
 
-			} else {
-				if(Yii::$app->request->isAjax)
-					return \yii\helpers\Json::encode(\app\components\widgets\ActiveForm::validate($model));
+            } else {
+                if (Yii::$app->request->isAjax) {
+                    return \yii\helpers\Json::encode(\app\components\widgets\ActiveForm::validate($model));
+                }
 			}
 		}
 
@@ -220,7 +225,7 @@ class PicController extends Controller
 		$model = $this->findModel($id);
 		$model->publish = 2;
 
-		if($model->save(false, ['publish','modified_id'])) {
+        if ($model->save(false, ['publish', 'modified_id'])) {
 			Yii::$app->session->setFlash('success', Yii::t('app', 'Person in charge success deleted.'));
 			return $this->redirect(Yii::$app->request->referrer ?: ['manage']);
 		}
@@ -238,7 +243,7 @@ class PicController extends Controller
 		$replace = $model->publish == 1 ? 0 : 1;
 		$model->publish = $replace;
 
-		if($model->save(false, ['publish','modified_id'])) {
+        if ($model->save(false, ['publish', 'modified_id'])) {
 			Yii::$app->session->setFlash('success', Yii::t('app', 'Person in charge success updated.'));
 			return $this->redirect(Yii::$app->request->referrer ?: ['manage']);
 		}
@@ -253,8 +258,9 @@ class PicController extends Controller
 	 */
 	protected function findModel($id)
 	{
-		if(($model = PpidPic::findOne($id)) !== null)
-			return $model;
+        if (($model = PpidPic::findOne($id)) !== null) {
+            return $model;
+        }
 
 		throw new \yii\web\NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
 	}

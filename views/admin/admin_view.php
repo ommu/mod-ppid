@@ -19,15 +19,15 @@ use yii\widgets\DetailView;
 use ommu\ppid\models\Ppid;
 use ommu\ppid\models\Articles;
 
-if(!$small) {
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Publication'), 'url' => ['/admin/page/admin/index']];
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'PPID'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $model->article->title;
+if (!$small) {
+    $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Publication'), 'url' => ['/admin/page/admin/index']];
+    $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'PPID'), 'url' => ['index']];
+    $this->params['breadcrumbs'][] = $model->article->title;
 
-$this->params['menu']['content'] = [
-	['label' => Yii::t('app', 'Update'), 'url' => Url::to(['update', 'id'=>$model->ppid_id]), 'icon' => 'pencil', 'htmlOptions' => ['class'=>'btn btn-primary']],
-	['label' => Yii::t('app', 'Delete'), 'url' => Url::to(['delete', 'id'=>$model->ppid_id]), 'htmlOptions' => ['data-confirm'=>Yii::t('app', 'Are you sure you want to delete this item?'), 'data-method'=>'post', 'class'=>'btn btn-danger'], 'icon' => 'trash'],
-];
+    $this->params['menu']['content'] = [
+        ['label' => Yii::t('app', 'Update'), 'url' => Url::to(['update', 'id'=>$model->ppid_id]), 'icon' => 'pencil', 'htmlOptions' => ['class'=>'btn btn-primary']],
+        ['label' => Yii::t('app', 'Delete'), 'url' => Url::to(['delete', 'id'=>$model->ppid_id]), 'htmlOptions' => ['data-confirm'=>Yii::t('app', 'Are you sure you want to delete this item?'), 'data-method'=>'post', 'class'=>'btn btn-danger'], 'icon' => 'trash'],
+    ];
 } ?>
 
 <div class="ppid-view">
@@ -47,8 +47,9 @@ $attributes = [
 		'attribute' => 'picName',
 		'value' => function ($model) {
 			$picName = isset($model->pic) ? $model->pic->pic_name : '-';
-			if($picName != '-')
-				return Html::a($picName, ['pic/view', 'id'=>$model->pic_id], ['title'=>$picName, 'class'=>'modal-btn']);
+            if ($picName != '-') {
+                return Html::a($picName, ['pic/view', 'id'=>$model->pic_id], ['title'=>$picName, 'class'=>'modal-btn']);
+            }
 			return $picName;
 		},
 		'format' => 'html',

@@ -92,12 +92,13 @@ class PpidPic extends \app\components\ActiveRecord
 	 */
 	public function getPpids($count=false)
 	{
-		if($count == false)
-			return $this->hasMany(Ppid::className(), ['pic_id' => 'id']);
+        if ($count == false) {
+            return $this->hasMany(Ppid::className(), ['pic_id' => 'id']);
+        }
 
 		$model = Ppid::find()
-			->alias('t')
-			->where(['t.pic_id' => $this->id]);
+            ->alias('t')
+            ->where(['t.pic_id' => $this->id]);
 		$ppids = $model->count();
 
 		return $ppids ? $ppids : 0;
@@ -135,11 +136,13 @@ class PpidPic extends \app\components\ActiveRecord
 	{
 		parent::init();
 
-		if(!(Yii::$app instanceof \app\components\Application))
-			return;
+        if (!(Yii::$app instanceof \app\components\Application)) {
+            return;
+        }
 
-		if(!$this->hasMethod('search'))
-			return;
+        if (!$this->hasMethod('search')) {
+            return;
+        }
 
 		$this->templateColumns['_no'] = [
 			'header' => '#',
@@ -223,35 +226,38 @@ class PpidPic extends \app\components\ActiveRecord
 	 */
 	public static function getInfo($id, $column=null)
 	{
-		if($column != null) {
-			$model = self::find();
-			if(is_array($column))
-				$model->select($column);
-			else
-				$model->select([$column]);
-			$model = $model->where(['id' => $id])->one();
-			return is_array($column) ? $model : $model->$column;
-			
-		} else {
-			$model = self::findOne($id);
-			return $model;
-		}
+        if ($column != null) {
+            $model = self::find();
+            if (is_array($column)) {
+                $model->select($column);
+            } else {
+                $model->select([$column]);
+            }
+            $model = $model->where(['id' => $id])->one();
+            return is_array($column) ? $model : $model->$column;
+
+        } else {
+            $model = self::findOne($id);
+            return $model;
+        }
 	}
 
 	/**
 	 * function getPic
 	 */
-	public static function getPic($publish=null, $array=true) 
+	public static function getPic($publish=null, $array=true)
 	{
 		$model = self::find()->alias('t')
 			->select(['t.id', 't.pic_name']);
-		if($publish != null)
-			$model->andWhere(['t.publish' => $publish]);
+        if ($publish != null) {
+            $model->andWhere(['t.publish' => $publish]);
+        }
 
 		$model = $model->orderBy('t.pic_name ASC')->all();
 
-		if($array == true)
-			return \yii\helpers\ArrayHelper::map($model, 'id', 'pic_name');
+        if ($array == true) {
+            return \yii\helpers\ArrayHelper::map($model, 'id', 'pic_name');
+        }
 
 		return $model;
 	}
@@ -272,15 +278,17 @@ class PpidPic extends \app\components\ActiveRecord
 	 */
 	public function beforeValidate()
 	{
-		if(parent::beforeValidate()) {
-			if($this->isNewRecord) {
-				if($this->creation_id == null)
-					$this->creation_id = !Yii::$app->user->isGuest ? Yii::$app->user->id : null;
-			} else {
-				if($this->modified_id == null)
-					$this->modified_id = !Yii::$app->user->isGuest ? Yii::$app->user->id : null;
-			}
-		}
-		return true;
+        if (parent::beforeValidate()) {
+            if ($this->isNewRecord) {
+                if ($this->creation_id == null) {
+                    $this->creation_id = !Yii::$app->user->isGuest ? Yii::$app->user->id : null;
+                }
+            } else {
+                if ($this->modified_id == null) {
+                    $this->modified_id = !Yii::$app->user->isGuest ? Yii::$app->user->id : null;
+                }
+            }
+        }
+        return true;
 	}
 }

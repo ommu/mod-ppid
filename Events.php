@@ -38,9 +38,9 @@ class Events extends \yii\base\BaseObject
 		$format = $ppid->format;
 
 		// insert difference format
-		if(is_array($format)) {
+        if (is_array($format)) {
 			foreach ($format as $val) {
-				if(in_array($val, $oldFormat)) {
+                if (in_array($val, $oldFormat)) {
 					unset($oldFormat[array_keys($oldFormat, $val)[0]]);
 					continue;
 				}
@@ -53,7 +53,7 @@ class Events extends \yii\base\BaseObject
 		}
 
 		// drop difference format
-		if(!empty($oldFormat)) {
+        if (!empty($oldFormat)) {
 			foreach ($oldFormat as $key => $val) {
 				PpidFormat::findOne($key)->delete();
 			}

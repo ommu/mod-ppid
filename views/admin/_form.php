@@ -114,8 +114,10 @@ echo $form->field($article, 'file', ['template' => '{label}{beginWrapper}<div>'.
 	])
 	->label($model->getAttributeLabel('format')); ?>
 
-<?php if($model->isNewRecord && !$model->getErrors())
+<?php 
+if ($model->isNewRecord && !$model->getErrors()) {
 	$article->publish = 1;
+}
 echo $form->field($article, 'publish')
 	->checkbox()
 	->label($article->getAttributeLabel('publish')); ?>

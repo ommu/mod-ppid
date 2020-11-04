@@ -71,21 +71,23 @@ class AdminController extends Controller
 	 */
 	public function actionManage()
 	{
-		$searchModel = new PpidSearch();
-		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $searchModel = new PpidSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-		$gridColumn = Yii::$app->request->get('GridColumn', null);
-		$cols = [];
-		if($gridColumn != null && count($gridColumn) > 0) {
-			foreach($gridColumn as $key => $val) {
-				if($gridColumn[$key] == 1)
-					$cols[] = $key;
-			}
-		}
-		$columns = $searchModel->getGridColumn($cols);
+        $gridColumn = Yii::$app->request->get('GridColumn', null);
+        $cols = [];
+        if ($gridColumn != null && count($gridColumn) > 0) {
+            foreach ($gridColumn as $key => $val) {
+                if ($gridColumn[$key] == 1) {
+                    $cols[] = $key;
+                }
+            }
+        }
+        $columns = $searchModel->getGridColumn($cols);
 
-		if(($pic = Yii::$app->request->get('pic')) != null)
+        if (($pic = Yii::$app->request->get('pic')) != null) {
 			$pic = \ommu\ppid\models\PpidPic::findOne($pic);
+        }
 
 		$this->view->title = Yii::t('app', 'PPID Informations');
 		$this->view->description = '';
@@ -109,7 +111,7 @@ class AdminController extends Controller
 		$article = new Articles();
 		$setting = $article->getSetting(['media_file_type']);
 
-		if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
 			$model->load(Yii::$app->request->post());
 			$article->load(Yii::$app->request->post());
 			$article->file = UploadedFile::getInstance($article, 'file');
@@ -120,18 +122,19 @@ class AdminController extends Controller
 			$isValid = $model->validate();
 			$isValid = $article->validate() && $isValid;
 
-			if($isValid) {
+            if ($isValid) {
 				$article->save();
 				$model->ppid_id = $article->id;
-				if($model->save()) {
+                if ($model->save()) {
 					Yii::$app->session->setFlash('success', Yii::t('app', 'PPID information success created.'));
 					return $this->redirect(['manage']);
 					//return $this->redirect(['view', 'id'=>$model->ppid_id]);
 				}
 
-			} else {
-				if(Yii::$app->request->isAjax)
-					return \yii\helpers\Json::encode(ArrayHelper::merge(ActiveForm::validate($model), ActiveForm::validate($article)));
+            } else {
+                if (Yii::$app->request->isAjax) {
+                    return \yii\helpers\Json::encode(ArrayHelper::merge(ActiveForm::validate($model), ActiveForm::validate($article)));
+                }
 			}
 		}
 
@@ -157,7 +160,7 @@ class AdminController extends Controller
 		$article = Articles::findOne($model->ppid_id);
 		$setting = $article->getSetting(['media_file_limit', 'media_file_type']);
 
-		if(Yii::$app->request->isPost) {
+        if (Yii::$app->request->isPost) {
 			$model->load(Yii::$app->request->post());
 			$article->load(Yii::$app->request->post());
 			$article->file = UploadedFile::getInstance($article, 'file');
@@ -168,15 +171,16 @@ class AdminController extends Controller
 			$isValid = $model->validate();
 			$isValid = $article->validate() && $isValid;
 
-			if($isValid) {
-				if($model->save() && $article->save()) {
+            if ($isValid) {
+                if ($model->save() && $article->save()) {
 					Yii::$app->session->setFlash('success', Yii::t('app', 'PPID information success updated.'));
 					return $this->redirect(['update', 'id'=>$model->ppid_id]);
 				}
 
-			} else {
-				if(Yii::$app->request->isAjax)
-					return \yii\helpers\Json::encode(ArrayHelper::merge(ActiveForm::validate($model), ActiveForm::validate($article)));
+            } else {
+                if (Yii::$app->request->isAjax) {
+                    return \yii\helpers\Json::encode(ArrayHelper::merge(ActiveForm::validate($model), ActiveForm::validate($article)));
+                }
 			}
 		}
 
@@ -233,8 +237,9 @@ class AdminController extends Controller
 	 */
 	protected function findModel($id)
 	{
-		if(($model = Ppid::findOne($id)) !== null)
-			return $model;
+        if (($model = Ppid::findOne($id)) !== null) {
+            return $model;
+        }
 
 		throw new \yii\web\NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
 	}
