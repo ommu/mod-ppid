@@ -44,17 +44,17 @@ class AdminController extends Controller
 	 */
 	public function behaviors()
 	{
-		return [
-			'access' => [
-				'class' => AccessControl::className(),
-			],
-			'verbs' => [
-				'class' => VerbFilter::className(),
-				'actions' => [
-					'delete' => ['POST'],
-				],
-			],
-		];
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
 	}
 
 	/**
@@ -62,7 +62,7 @@ class AdminController extends Controller
 	 */
 	public function actionIndex()
 	{
-		return $this->redirect(['manage']);
+        return $this->redirect(['manage']);
 	}
 
 	/**
@@ -86,7 +86,7 @@ class AdminController extends Controller
         $columns = $searchModel->getGridColumn($cols);
 
         if (($pic = Yii::$app->request->get('pic')) != null) {
-			$pic = \ommu\ppid\models\PpidPic::findOne($pic);
+            $pic = \ommu\ppid\models\PpidPic::findOne($pic);
         }
 
 		$this->view->title = Yii::t('app', 'PPID Informations');
@@ -107,17 +107,17 @@ class AdminController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model = new Ppid();
+        $model = new Ppid();
 		$article = new Articles();
 		$setting = $article->getSetting(['media_file_type']);
 
         if (Yii::$app->request->isPost) {
-			$model->load(Yii::$app->request->post());
-			$article->load(Yii::$app->request->post());
-			$article->file = UploadedFile::getInstance($article, 'file');
-			// $postData = Yii::$app->request->post();
-			// $model->load($postData);
-			// $model->order = $postData['order'] ? $postData['order'] : 0;
+            $model->load(Yii::$app->request->post());
+            $article->load(Yii::$app->request->post());
+            $article->file = UploadedFile::getInstance($article, 'file');
+            // $postData = Yii::$app->request->post();
+            // $model->load($postData);
+            // $model->order = $postData['order'] ? $postData['order'] : 0;
 
 			$isValid = $model->validate();
 			$isValid = $article->validate() && $isValid;
@@ -135,8 +135,8 @@ class AdminController extends Controller
                 if (Yii::$app->request->isAjax) {
                     return \yii\helpers\Json::encode(ArrayHelper::merge(ActiveForm::validate($model), ActiveForm::validate($article)));
                 }
-			}
-		}
+            }
+        }
 
 		$this->view->title = Yii::t('app', 'Create PPID');
 		$this->view->description = '';
@@ -161,12 +161,12 @@ class AdminController extends Controller
 		$setting = $article->getSetting(['media_file_limit', 'media_file_type']);
 
         if (Yii::$app->request->isPost) {
-			$model->load(Yii::$app->request->post());
-			$article->load(Yii::$app->request->post());
-			$article->file = UploadedFile::getInstance($article, 'file');
-			// $postData = Yii::$app->request->post();
-			// $model->load($postData);
-			// $model->order = $postData['order'] ? $postData['order'] : 0;
+            $model->load(Yii::$app->request->post());
+            $article->load(Yii::$app->request->post());
+            $article->file = UploadedFile::getInstance($article, 'file');
+            // $postData = Yii::$app->request->post();
+            // $model->load($postData);
+            // $model->order = $postData['order'] ? $postData['order'] : 0;
 
 			$isValid = $model->validate();
 			$isValid = $article->validate() && $isValid;
@@ -181,8 +181,8 @@ class AdminController extends Controller
                 if (Yii::$app->request->isAjax) {
                     return \yii\helpers\Json::encode(ArrayHelper::merge(ActiveForm::validate($model), ActiveForm::validate($article)));
                 }
-			}
-		}
+            }
+        }
 
 		$this->view->title = Yii::t('app', 'Update PPID: {article-title}', ['article-title' => $model->article->title]);
 		$this->view->description = '';
@@ -201,7 +201,7 @@ class AdminController extends Controller
 	 */
 	public function actionView($id)
 	{
-		$model = $this->findModel($id);
+        $model = $this->findModel($id);
 		$article = Articles::findOne($model->ppid_id);
 
 		$this->view->title = Yii::t('app', 'Detail PPID: {article-title}', ['article-title' => $model->article->title]);

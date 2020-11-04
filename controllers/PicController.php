@@ -42,8 +42,9 @@ class PicController extends Controller
 	 */
 	public function init()
 	{
-		parent::init();
-		$this->subMenu = $this->module->params['setting_submenu'];
+        parent::init();
+
+        $this->subMenu = $this->module->params['setting_submenu'];
 	}
 
 	/**
@@ -51,18 +52,18 @@ class PicController extends Controller
 	 */
 	public function behaviors()
 	{
-		return [
-			'access' => [
-				'class' => AccessControl::className(),
-			],
-			'verbs' => [
-				'class' => VerbFilter::className(),
-				'actions' => [
-					'delete' => ['POST'],
-					'publish' => ['POST'],
-				],
-			],
-		];
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                    'publish' => ['POST'],
+                ],
+            ],
+        ];
 	}
 
 	/**
@@ -87,7 +88,7 @@ class PicController extends Controller
 	 */
 	public function actionIndex()
 	{
-		return $this->redirect(['manage']);
+        return $this->redirect(['manage']);
 	}
 
 	/**
@@ -128,28 +129,28 @@ class PicController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model = new PpidPic();
+        $model = new PpidPic();
 
         if (Yii::$app->request->isPost) {
-			$model->load(Yii::$app->request->post());
-			// $postData = Yii::$app->request->post();
-			// $model->load($postData);
-			// $model->order = $postData['order'] ? $postData['order'] : 0;
+            $model->load(Yii::$app->request->post());
+            // $postData = Yii::$app->request->post();
+            // $model->load($postData);
+            // $model->order = $postData['order'] ? $postData['order'] : 0;
 
             if ($model->save()) {
-				Yii::$app->session->setFlash('success', Yii::t('app', 'Person in charge success created.'));
+                Yii::$app->session->setFlash('success', Yii::t('app', 'Person in charge success created.'));
                 if (!Yii::$app->request->isAjax) {
                     return $this->redirect(['manage']);
                 }
-				return $this->redirect(Yii::$app->request->referrer ?: ['manage']);
-				//return $this->redirect(['view', 'id'=>$model->id]);
+                return $this->redirect(Yii::$app->request->referrer ?: ['manage']);
+                //return $this->redirect(['view', 'id'=>$model->id]);
 
             } else {
                 if (Yii::$app->request->isAjax) {
                     return \yii\helpers\Json::encode(\app\components\widgets\ActiveForm::validate($model));
                 }
-			}
-		}
+            }
+        }
 
 		$this->view->title = Yii::t('app', 'Create PIC');
 		$this->view->description = '';
@@ -170,24 +171,24 @@ class PicController extends Controller
 		$model = $this->findModel($id);
 
         if (Yii::$app->request->isPost) {
-			$model->load(Yii::$app->request->post());
-			// $postData = Yii::$app->request->post();
-			// $model->load($postData);
-			// $model->order = $postData['order'] ? $postData['order'] : 0;
+            $model->load(Yii::$app->request->post());
+            // $postData = Yii::$app->request->post();
+            // $model->load($postData);
+            // $model->order = $postData['order'] ? $postData['order'] : 0;
 
             if ($model->save()) {
-				Yii::$app->session->setFlash('success', Yii::t('app', 'Person in charge success updated.'));
+                Yii::$app->session->setFlash('success', Yii::t('app', 'Person in charge success updated.'));
                 if (!Yii::$app->request->isAjax) {
                     return $this->redirect(['manage']);
                 }
-				return $this->redirect(Yii::$app->request->referrer ?: ['manage']);
+                return $this->redirect(Yii::$app->request->referrer ?: ['manage']);
 
             } else {
                 if (Yii::$app->request->isAjax) {
                     return \yii\helpers\Json::encode(\app\components\widgets\ActiveForm::validate($model));
                 }
-			}
-		}
+            }
+        }
 
 		$this->view->title = Yii::t('app', 'Update PIC: {pic-name}', ['pic-name' => $model->pic_name]);
 		$this->view->description = '';
@@ -204,7 +205,7 @@ class PicController extends Controller
 	 */
 	public function actionView($id)
 	{
-		$model = $this->findModel($id);
+        $model = $this->findModel($id);
 
 		$this->view->title = Yii::t('app', 'Detail PIC: {pic-name}', ['pic-name' => $model->pic_name]);
 		$this->view->description = '';
