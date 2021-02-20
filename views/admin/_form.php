@@ -30,7 +30,7 @@ use ommu\ppid\models\PpidSetting;
 <div class="ppid-form">
 
 <?php $form = ActiveForm::begin([
-	'options' => ['class'=>'form-horizontal form-label-left'],
+	'options' => ['class' => 'form-horizontal form-label-left'],
 	'enableClientValidation' => false,
 	'enableAjaxValidation' => false,
 	//'enableClientScript' => true,
@@ -46,11 +46,11 @@ use ommu\ppid\models\PpidSetting;
 
 <?php $category = ArticleCategory::getCategory(1, PpidSetting::getInfo('category_id'));
 echo $form->field($article, 'cat_id')
-	->dropDownList($category, ['prompt'=>''])
+	->dropDownList($category, ['prompt' => ''])
 	->label($article->getAttributeLabel('cat_id')); ?>
 
 <?php echo $form->field($article, 'title')
-	->textInput(['maxlength'=>true])
+	->textInput(['maxlength' => true])
 	->label($article->getAttributeLabel('title')); ?>
 
 <?php echo $form->field($model, 'pic_id')
@@ -58,7 +58,7 @@ echo $form->field($article, 'cat_id')
 		'options' => [
 			'placeholder' => Yii::t('app', 'Select a person in charge..'),
 		],
-		'items' => ArrayHelper::merge([''=>Yii::t('app', 'Select a person in charge..')], PpidPic::getPic()),
+		'items' => ArrayHelper::merge(['' => Yii::t('app', 'Select a person in charge..')], PpidPic::getPic()),
 		'pluginOptions' => [
 			'persist' => false,
 			'createOnBlur' => false,
@@ -72,7 +72,7 @@ echo $form->field($article, 'cat_id')
 		'options' => [
 			'placeholder' => Yii::t('app', 'Select a release year..'),
 		],
-		'items' => ArrayHelper::merge([''=>Yii::t('app', 'Select a release year..')], Ppid::getFilter('release')),
+		'items' => ArrayHelper::merge(['' => Yii::t('app', 'Select a release year..')], Ppid::getFilter('release')),
 		'pluginOptions' => [
 			'persist' => false,
 			'createOnBlur' => false,
@@ -86,7 +86,7 @@ echo $form->field($article, 'cat_id')
 		'options' => [
 			'placeholder' => Yii::t('app', 'Select a retention..'),
 		],
-		'items' => ArrayHelper::merge([''=>Yii::t('app', 'Select a retention..')], Ppid::getFilter('retention')),
+		'items' => ArrayHelper::merge(['' => Yii::t('app', 'Select a retention..')], Ppid::getFilter('retention')),
 		'pluginOptions' => [
 			'persist' => false,
 			'createOnBlur' => false,
@@ -96,11 +96,11 @@ echo $form->field($article, 'cat_id')
 	->label($model->getAttributeLabel('retention')); ?>
 
 <?php $uploadPath = join('/', [Articles::getUploadPath(false), $article->id]);
-$file = !$article->isNewRecord && $article->document ? Html::a($article->document, Url::to(join('/', ['@webpublic', $uploadPath, $article->document])), ['title'=>$article->document, 'target'=>'_blank', 'class'=>'d-inline-block mb-3']) : '';
+$file = !$article->isNewRecord && $article->document ? Html::a($article->document, Url::to(join('/', ['@webpublic', $uploadPath, $article->document])), ['title' => $article->document, 'target' => '_blank', 'class' => 'd-inline-block mb-4']) : '';
 echo $form->field($article, 'file', ['template' => '{label}{beginWrapper}<div>'.$file.'</div>{input}{error}{hint}{endWrapper}'])
 	->fileInput()
 	->label($article->getAttributeLabel('file'))
-	->hint(Yii::t('app', 'extensions are allowed: {extensions}', ['extensions'=>$setting->media_file_type])); ?>
+	->hint(Yii::t('app', 'extensions are allowed: {extensions}', ['extensions' => $setting->media_file_type])); ?>
 
 <?php echo $form->field($model, 'format')
 	->widget(Selectize::className(), [

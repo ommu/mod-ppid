@@ -147,7 +147,7 @@ class PpidPic extends \app\components\ActiveRecord
 		$this->templateColumns['_no'] = [
 			'header' => '#',
 			'class' => 'app\components\grid\SerialColumn',
-			'contentOptions' => ['class'=>'text-center'],
+			'contentOptions' => ['class' => 'text-center'],
 		];
 		$this->templateColumns['pic_name'] = [
 			'attribute' => 'pic_name',
@@ -202,20 +202,20 @@ class PpidPic extends \app\components\ActiveRecord
 			'attribute' => 'ppids',
 			'value' => function($model, $key, $index, $column) {
 				$ppids = $model->getPpids(true);
-				return Html::a($ppids, ['admin/manage', 'pic'=>$model->primaryKey], ['title'=>Yii::t('app', '{count} ppids', ['count'=>$ppids])]);
+				return Html::a($ppids, ['admin/manage', 'pic' => $model->primaryKey], ['title' => Yii::t('app', '{count} ppids', ['count' => $ppids])]);
 			},
 			'filter' => false,
-			'contentOptions' => ['class'=>'text-center'],
+			'contentOptions' => ['class' => 'text-center'],
 			'format' => 'html',
 		];
 		$this->templateColumns['publish'] = [
 			'attribute' => 'publish',
 			'value' => function($model, $key, $index, $column) {
-				$url = Url::to(['pic/publish', 'id'=>$model->primaryKey]);
+				$url = Url::to(['pic/publish', 'id' => $model->primaryKey]);
 				return $this->quickAction($url, $model->publish);
 			},
 			'filter' => $this->filterYesNo(),
-			'contentOptions' => ['class'=>'text-center'],
+			'contentOptions' => ['class' => 'text-center'],
 			'format' => 'raw',
 			'visible' => !Yii::$app->request->get('trash') ? true : false,
 		];

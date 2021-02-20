@@ -21,7 +21,7 @@ use app\components\widgets\ActiveForm;
 <div class="ppid-pic-form">
 
 <?php $form = ActiveForm::begin([
-	'options' => ['class'=>'form-horizontal form-label-left'],
+	'options' => ['class' => 'form-horizontal form-label-left'],
 	'enableClientValidation' => true,
 	'enableAjaxValidation' => false,
 	//'enableClientScript' => true,
@@ -35,11 +35,11 @@ use app\components\widgets\ActiveForm;
 <?php //echo $form->errorSummary($model);?>
 
 <?php echo $form->field($model, 'pic_name')
-	->textInput(['maxlength'=>true])
+	->textInput(['maxlength' => true])
 	->label($model->getAttributeLabel('pic_name')); ?>
 
 <?php echo $form->field($model, 'pic_desc')
-	->textarea(['rows'=>4, 'cols'=>50])
+	->textarea(['rows' => 4, 'cols' => 50])
 	->label($model->getAttributeLabel('pic_desc')); ?>
 
 <?php 

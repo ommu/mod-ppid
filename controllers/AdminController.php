@@ -128,7 +128,7 @@ class AdminController extends Controller
                 if ($model->save()) {
 					Yii::$app->session->setFlash('success', Yii::t('app', 'PPID information success created.'));
 					return $this->redirect(['manage']);
-					//return $this->redirect(['view', 'id'=>$model->ppid_id]);
+					//return $this->redirect(['view', 'id' => $model->ppid_id]);
 				}
 
             } else {
@@ -174,7 +174,7 @@ class AdminController extends Controller
             if ($isValid) {
                 if ($model->save() && $article->save()) {
 					Yii::$app->session->setFlash('success', Yii::t('app', 'PPID information success updated.'));
-					return $this->redirect(['update', 'id'=>$model->ppid_id]);
+					return $this->redirect(['update', 'id' => $model->ppid_id]);
 				}
 
             } else {

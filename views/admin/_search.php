@@ -31,7 +31,7 @@ use ommu\ppid\models\PpidPic;
 
 		<?php $pic = PpidPic::getPic();
 		echo $form->field($model, 'pic_id')
-			->dropDownList($pic, ['prompt'=>'']);?>
+			->dropDownList($pic, ['prompt' => '']);?>
 
 		<?php echo $form->field($model, 'release_year');?>
 
