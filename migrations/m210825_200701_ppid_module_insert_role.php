@@ -52,9 +52,9 @@ class m210825_200701_ppid_module_insert_role extends \yii\db\Migration
 			]);
 		}
 
-        // permission
 		$tableName = Yii::$app->db->tablePrefix . $authManager->itemChildTable;
         if (Yii::$app->db->getTableSchema($tableName, true)) {
+            // permission
 			$this->batchInsert($tableName, ['parent', 'child'], [
 				['ppidModLevelAdmin', 'ppidModLevelModerator'],
 				['ppidModLevelAdmin', '/ppid/setting/update'],
@@ -63,11 +63,8 @@ class m210825_200701_ppid_module_insert_role extends \yii\db\Migration
 				['ppidModLevelModerator', '/ppid/admin/*'],
 				['ppidModLevelModerator', '/ppid/pic/*'],
 			]);
-		}
 
-        // role
-		$tableName = Yii::$app->db->tablePrefix . $authManager->itemChildTable;
-        if (Yii::$app->db->getTableSchema($tableName, true)) {
+            // role
 			$this->batchInsert($tableName, ['parent', 'child'], [
 				['userAdmin', 'ppidModLevelAdmin'],
 				['userModerator', 'ppidModLevelModerator'],
