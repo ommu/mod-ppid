@@ -63,7 +63,8 @@ class PpidPic extends PpidPicModel
         if (!($column && is_array($column))) {
             $query = PpidPicModel::find()->alias('t');
         } else {
-            $query = PpidPicModel::find()->alias('t')->select($column);
+            $query = PpidPicModel::find()->alias('t')
+                ->select($column);
         }
 		$query->joinWith([
 			'creation creation', 

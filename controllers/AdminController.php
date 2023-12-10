@@ -210,6 +210,7 @@ class AdminController extends Controller
 		return $this->oRender('admin_view', [
 			'model' => $model,
 			'article' => $article,
+			'small' => false,
 		]);
 	}
 

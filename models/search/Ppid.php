@@ -63,7 +63,8 @@ class Ppid extends PpidModel
         if (!($column && is_array($column))) {
             $query = PpidModel::find()->alias('t');
         } else {
-            $query = PpidModel::find()->alias('t')->select($column);
+            $query = PpidModel::find()->alias('t')
+                ->select($column);
         }
 		$query->joinWith([
 			'article article', 
