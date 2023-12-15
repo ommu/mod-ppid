@@ -31,7 +31,7 @@
 	],
 	"require": {
 		"php": "~7.0",
-		"ommu/article": "dev-master"
+		"ommu/article": "v2.x-dev"
 	},
 	"autoload": {
 		"psr-4": {
