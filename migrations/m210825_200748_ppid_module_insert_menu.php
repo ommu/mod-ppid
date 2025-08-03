@@ -6,7 +6,7 @@
  * @contact (+62)811-2540-432
  * @copyright Copyright (c) 2019 OMMU (www.ommu.id)
  * @created date 25 August 2021, 04:25 WIB
- * @link https://bitbucket.org/ommu/ppid
+ * @link https://github.com/ommu/mod-ppid
  *
  */
 
