@@ -10,15 +10,15 @@
 		"yii2"
 	],
 	"license": "Apache-2.0",
-	"homepage": "https://bitbucket.org/ommu/ppid",
+	"homepage": "https://github.com/ommu/mod-ppid",
 	"support": {
-		"issues": "https://bitbucket.org/ommu/ppid/issues",
-		"wiki": "https://bitbucket.org/ommu/ppid/wiki",
-		"source": "https://bitbucket.org/ommu/ppid"
+		"issues": "https://github.com/ommu/mod-ppid/issues",
+		"wiki": "https://github.com/ommu/mod-ppid/wiki",
+		"source": "https://github.com/ommu/mod-ppid"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://bitbucket.org/ommu/ppid.git"
+		"url": "https://github.com/ommu/mod-ppid.git"
 	},
 	"authors": [
 		{
